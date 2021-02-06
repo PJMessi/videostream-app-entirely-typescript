@@ -10,3 +10,8 @@ module.exports.production = {
     dialect: "postgres",
     url: process.env.DB_URL  
 };
+
+module.exports.test = {
+    dialect: "sqlite",
+    storage: 'database.sqlite'
+};

@@ -13,11 +13,19 @@ app.use(router);
 
 app.use(errorMiddleware);
 
-const PORT = 8080;
-app.listen(PORT, () => {
-    console.log(`Server listening at ${PORT}`);
     
-    sequelize.authenticate()
-    .then(() => { console.log('Database connected.'); })
-    .catch(() => { console.log('Failed to connect to database.'); })
-});
+sequelize.authenticate()
+.then(() => { 
+    console.log('Database connected.'); 
+
+    const PORT = 8080;
+    app.listen(PORT, () => {
+        console.log(`Server listening at ${PORT}`);
+    });
+
+})
+.catch(() => { console.log('Failed to connect to database.'); })
+
+
+
+export default app;

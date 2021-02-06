@@ -49,7 +49,7 @@ export const register = async (
 
         const token = user.generateToken();
 
-        return response.json({
+        return response.status(201).json({
             message: 'Registered user with auth token.',
             data: { user, token }
         });

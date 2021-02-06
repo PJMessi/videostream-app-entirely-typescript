@@ -8,12 +8,16 @@
         "moduleResolution": "node",
         "strict": true,
         "target": "es6",
-        "types": ["node"],
+        "types": [
+            "node", "mocha"
+        ],
         "esModuleInterop": true,
         "rootDir": "./",
         "outDir": "./build",
         "paths": {
-            "#root/*": ["./*"]
+            "#root/*": [
+                "./*"
+            ]
         }
     }
 }

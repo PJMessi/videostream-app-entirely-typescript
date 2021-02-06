@@ -27,4 +27,4 @@ const sequelize = new Sequelize(DB_URL, {
     },
 });
 
-export default sequelize;   
+export default sequelize;

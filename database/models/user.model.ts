@@ -2,12 +2,6 @@ import { Column, DataType, Model, Table } from "sequelize-typescript";
 import jwt from 'jsonwebtoken'; 
 
 @Table({
-  defaultScope: {
-    attributes: {
-      exclude: ['deleteAt']
-    }
-  },
-  paranoid: true,
   tableName: 'users'
 })
 
