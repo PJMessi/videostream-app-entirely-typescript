@@ -56,7 +56,7 @@ export const fetchVideo = async (
         const videoId = parseInt(request.params.videoId);
     
         const video = await getById(videoId);
-
+        
         return response.json({
             message: 'Video with given id.',
             data: { video }
