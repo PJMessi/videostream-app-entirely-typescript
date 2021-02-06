@@ -3,7 +3,6 @@ import { NextFunction, Request, Response, Router } from 'express';
 const router = Router();
 
 router.get('/', async (request: Request, response: Response, next: NextFunction) => {
-
     try {
         return response.json({
             title: 'Typescript Videostream API.',
@@ -15,5 +14,6 @@ router.get('/', async (request: Request, response: Response, next: NextFunction)
     }
 
 });
+
 
 export default router;
