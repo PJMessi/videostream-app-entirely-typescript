@@ -11,14 +11,7 @@ import { Column, DataType, Model, Table } from "sequelize-typescript";
 })
 
 
-export class Video extends Model<Video> {
-    @Column({
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: DataType.INTEGER
-    })
-    id!: number;
+export class Video extends Model {
 
     @Column({
         allowNull: false,
@@ -28,13 +21,23 @@ export class Video extends Model<Video> {
 
     @Column({
         allowNull: false,
+        type: DataType.STRING
+    })
+    path!: string;
+
+    @Column({
+        allowNull: false,
         type: DataType.INTEGER
     })
     size!: number;
 
     @Column({
         allowNull: false,
-        type: DataType.STRING
+        type: DataType.INTEGER
     })
     price!: number
+
+    isSysModel = () => {
+        console.log('hello')
+    }
 }
