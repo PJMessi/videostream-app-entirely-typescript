@@ -7,6 +7,7 @@ import errorMiddleware from '#root/middlewares/error.middleware';
 import sequelize from '#root/database/connection'
 
 const app = express();
+app.use(express.json());
 
 app.use(router);
 

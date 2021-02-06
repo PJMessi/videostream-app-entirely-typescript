@@ -9,7 +9,7 @@ export default (error: any, request: Request, response: Response, next: NextFunc
 	if (status == 422) {
         return response.status(422).json({
             message: 'The given data was invalid.',
-			errors: error.message
+			errors: JSON.parse(error.message)
         });
 	}
     

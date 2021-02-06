@@ -7,8 +7,7 @@ export type PaginationFilter = {
     where?: object, 
     include?: string[], 
     sortOrder?: 'ASC'|'DESC',
-    sortBy?: string, 
-    transaction?: Transaction 
+    sortBy?: string
 }
 
 export type RefinedPaginationFilter = {
@@ -17,8 +16,7 @@ export type RefinedPaginationFilter = {
     offset: number,
     where: object
     include : string[] | [],
-    order: [string, 'ASC'|'DESC'][],
-    transaction?: Transaction
+    order: [string, 'ASC'|'DESC'][]
 }
 
 export type PaginationResult = {
@@ -72,7 +70,5 @@ export const refineFilters = (filter: PaginationFilter): RefinedPaginationFilter
     const orderFormat1: [string, 'ASC'|'DESC'] = [sortBy, sortOrder];
     const order = [orderFormat1]
 
-    const transaction = filter.transaction
-
-    return { limit, page, offset, where, include, order, transaction };
+    return { limit, page, offset, where, include, order };
 }
