@@ -11,6 +11,9 @@
         "types": ["node"],
         "esModuleInterop": true,
         "rootDir": "./",
-        "outDir": "./build"
+        "outDir": "./build",
+        "paths": {
+            "#root/*": ["./*"]
+        }
     }
 }

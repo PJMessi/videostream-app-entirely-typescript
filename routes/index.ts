@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response, Router } from 'express';
-import { Video } from '../database/models/video.model';
 
 const router = Router();
 

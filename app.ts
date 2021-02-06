@@ -1,9 +1,10 @@
+import "module-alias/register";
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import router from './routes';
-import errorMiddleware from './middlewares/error.middleware';
-import sequelize from './database/connection'
+import router from '#root/routes';
+import errorMiddleware from '#root/middlewares/error.middleware';
+import sequelize from '#root/database/connection'
 
 const app = express();
 
