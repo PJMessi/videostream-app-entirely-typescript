@@ -58,3 +58,24 @@ export const register = async (
         next(error);
     }
 }
+
+// Returns the data of the logged in user.
+export const profile = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+
+) => {
+
+    try {
+        const user = request.auth.user;
+
+        return response.json({
+            message: 'Data of the auth user.',
+            data: { user }
+        });
+        
+    } catch (error) {
+        next(error);
+    }
+}

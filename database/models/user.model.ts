@@ -33,7 +33,7 @@ export class User extends Model {
   password!: string
 
   toJSON = () => {
-    return {...super.toJSON(), deletedAt: undefined};
+    return {...super.toJSON(), password: undefined, deletedAt: undefined};
   }
 
   generateToken = () => {

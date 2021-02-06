@@ -8,7 +8,7 @@ import { User } from '#root/database/models/user.model';
 declare global {
     namespace Express {
         interface Request {
-            auth?: { user?: User }
+            auth: { user?: User }
         }
     }
 }
