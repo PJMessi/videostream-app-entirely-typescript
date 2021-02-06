@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import videoRouter from './video.route';
+import authRouter from './auth.route';
 
 const router = Router();
 
@@ -17,6 +18,7 @@ router.get('/', async (request: Request, response: Response, next: NextFunction)
 });
 
 
+router.use('/auth', authRouter);
 router.use('/videos', videoRouter);
 
 export default router;

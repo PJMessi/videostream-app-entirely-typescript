@@ -1,4 +1,5 @@
 import { Column, DataType, Model, Table } from "sequelize-typescript";
+import jwt from 'jsonwebtoken'; 
 
 @Table({
   defaultScope: {
@@ -30,5 +31,15 @@ export class User extends Model {
     type: DataType.STRING
   })
   password!: string
+
+  toJSON = () => {
+    return {...super.toJSON(), deletedAt: undefined};
+  }
+
+  generateToken = () => {
+    const secret = process.env.JWT_SECRET || 'jsonwebtoken';
+    const token = jwt.sign(this.toJSON(), secret);
+    return token;
+  }
 
 }

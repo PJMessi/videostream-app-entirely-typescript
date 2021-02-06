@@ -37,7 +37,7 @@ export class Video extends Model {
     })
     price!: number
 
-    isSysModel = () => {
-        console.log('hello')
+    toJSON() {
+        return {...super.toJSON(), deletedAt: undefined};
     }
 }
