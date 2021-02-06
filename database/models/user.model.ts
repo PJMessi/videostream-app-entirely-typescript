@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 @Table({
   tableName: 'users'
 })
-
 export class User extends Model {
 
   @Column({
@@ -36,4 +35,22 @@ export class User extends Model {
     return token;
   }
 
+}
+
+export type UserAttributes = {
+  id?: number,
+  name: string,
+  email: string,
+  password: string,
+  createdAt?: Date,
+  updatedAt?: Date
+}
+
+export type UserAttributesForUpdate = {
+  id?: number,
+  name?: string,
+  email?: string,
+  password?: string,
+  createdAt?: Date,
+  updatedAt?: Date
 }

@@ -15,7 +15,7 @@ export const loginValidation = async (
 		const { email, password } = request.body;
 
 		const rules = {
-            email: 'required|string',
+            email: 'required|email|string',
             password: 'required|string',
 		};
                 
@@ -45,13 +45,15 @@ export const registerValidation = async (
 			email: 'required|string|email|max:255',
 			password: 'required|string|confirmed|max:255'
 		};
-                
+		
 		await validator({ name, email, password, password_confirmation }, rules);
-        
+
 		const userWithTheEmail = await getOne({ email });
-		if (userWithTheEmail) throw new createError.UnprocessableEntity(JSON.stringify({
-			email: ['User with that email already exists.']
-		}));
+		if (userWithTheEmail) {
+			throw new createError.UnprocessableEntity(JSON.stringify({
+				email: ['User with that email already exists.']
+			}));
+		}
         
 		next();
         

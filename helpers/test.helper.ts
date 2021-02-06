@@ -9,16 +9,19 @@ export const resetDatabase = async () => {
 }
 
 export const createTestDatabase = async () => {
+    console.log('Creating test database.');
     // fs.createWriteStream('database.sqlite');
     const file = await fs.promises.open('database.sqlite', 'w');
     await file.close();
 }
 
 export const deleteTestDatabase = async () => {
+    console.log('Deleting test database.');
     await fs.promises.unlink('database.sqlite');
 }
 
 export const migrateTables = async () => {
+    console.log('Migrating data to test database.');
     await new Promise((resolve, reject) => {
 
         const migrate = exec(
