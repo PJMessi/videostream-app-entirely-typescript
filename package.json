@@ -6,8 +6,8 @@
   "scripts": {
     "test": "NODE_ENV=test mocha -r ts-node/register tests/**/*.ts --exit",
     "watch": "ts-node-dev --respawn app.ts",
-    "build": "tsc --project ./",
-    "start": "ts-node-dev app.ts"
+    "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./ -o ./dist",
+    "start": "node ./dist/app.js"
   },
   "author": "",
   "license": "ISC",
@@ -24,6 +24,8 @@
     "sequelize-cli": "^6.2.0",
     "sequelize-typescript": "^2.0.0",
     "sqlite3": "^5.0.0",
+    "tsconfig-paths": "^3.9.0",
+    "tscpaths": "^0.0.9",
     "validatorjs": "^3.22.1"
   },
   "devDependencies": {
