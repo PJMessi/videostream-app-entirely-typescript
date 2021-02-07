@@ -6,7 +6,7 @@ import { resetDatabase, createTestDatabase, deleteTestDatabase, migrateTables } 
  * Creates a test database and migrates all the tables to the database.
  */
 before(async () => {  
-    await createTestDatabase();
+    // await createTestDatabase();
 
     await migrateTables();
 })
@@ -16,7 +16,7 @@ before(async () => {
  * Deletes the test database.
  */
 after(async () => {  
-    await deleteTestDatabase();
+    // await deleteTestDatabase();
 })
 
 /**

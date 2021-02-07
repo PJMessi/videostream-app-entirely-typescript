@@ -13,5 +13,5 @@ module.exports.production = {
 
 module.exports.test = {
     dialect: "sqlite",
-    storage: 'database.sqlite'
+    url: 'sqlite::memory:'
 };
