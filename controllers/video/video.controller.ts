@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { paginate, create, getById } from "#root/services/video.service";
+import createError from 'http-errors';
 
 // Paginates the videos.
 export const paginateVideos = async (
@@ -56,6 +57,9 @@ export const fetchVideo = async (
         const videoId = parseInt(request.params.videoId);
     
         const video = await getById(videoId);
+        if (!video) {
+            throw new createError.NotFound('Video with the given id not found.');
+        }
         
         return response.json({
             message: 'Video with given id.',
