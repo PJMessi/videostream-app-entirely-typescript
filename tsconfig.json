@@ -22,6 +22,7 @@
             "@controllers/*": ["./controllers/*"],
             "@models/*": ["./database/models/*"],
             "@factories/*": ["./database/factories/*"],
+            "@helpers/*": ["./helpers/*"],
         }
     }
 }

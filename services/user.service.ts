@@ -1,5 +1,5 @@
 import { User } from '@root/database/models/user.model';
-import { PaginationFilter, appendPaginationData, refineFilters, PaginationResult } from '@root/helpers/pagination.helper';
+import { PaginationFilter, appendPaginationData, refineFilters, PaginationResult } from '@helpers/pagination.helper';
 import { Transaction } from 'sequelize/types';
 import bcrypt from 'bcrypt';
 
