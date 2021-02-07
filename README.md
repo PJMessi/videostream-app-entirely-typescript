@@ -2,7 +2,9 @@
 
 **WORK IN PROGRESS**   
 
-Videostreaming application APIs in Node Js and Express, made entirely in Typescript. Also featurs video search and logs browsing using elastic search.
+Videostreaming application APIs in Node Js and Express, made entirely in Typescript.   
+Also featurs video search and logs browsing using elastic search.   
+Feature tests written for all the APIs.
 
 # Stack
 
@@ -12,3 +14,4 @@ Videostreaming application APIs in Node Js and Express, made entirely in Typescr
 4. Elastic Search, Logstash, Kibana (ELK stack)
 5. Postgres Database
 6. Handlebars
+7. Mocha and Chai
