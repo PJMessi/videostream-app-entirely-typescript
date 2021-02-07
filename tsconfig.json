@@ -15,7 +15,13 @@
         "rootDir": "./",
         "outDir": "./dist",
         "paths": {
-            "#root/*": ["./*"]
+            "@root/*": ["./*"],
+            "@middlewares/*": ["./middlewares/*"],
+            "@services/*": ["./services/*"],
+            "@routes/*": ["./routes/*"],
+            "@controllers/*": ["./controllers/*"],
+            "@models/*": ["./database/models/*"],
+            "@factories/*": ["./database/factories/*"],
         }
     }
 }

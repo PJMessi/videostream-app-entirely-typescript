@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 
-import validator from "#root/helpers/validator";
+import validator from "@root/helpers/validator";
 
 // validates the data for paginate function in video.controller.
 export const paginateValidation = async (

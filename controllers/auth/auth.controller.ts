@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { getOne, create } from '#root/services/user.service';
+import { getOne, create } from '@services/user.service';
 import createError from 'http-errors';
 import bcrypt from 'bcrypt';
 

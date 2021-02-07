@@ -1,5 +1,5 @@
-import { Video } from '#root/database/models/video.model';
-import { PaginationFilter, appendPaginationData, refineFilters, PaginationResult } from '#root/helpers/pagination.helper';
+import { Video } from '@root/database/models/video.model';
+import { PaginationFilter, appendPaginationData, refineFilters, PaginationResult } from '@root/helpers/pagination.helper';
 import { Transaction } from 'sequelize/types';
 
 // Paginates the result according to the given filters.

@@ -1,5 +1,5 @@
 import "module-alias/register";
-import { resetDatabase, createTestDatabase, deleteTestDatabase, migrateTables } from '#root/helpers/test.helper';
+import { resetDatabase, createTestDatabase, deleteTestDatabase, migrateTables } from '@root/helpers/test.helper';
 
 /**
  * Runs before the start of tests.

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { paginate, create, getById } from "#root/services/video.service";
+import { paginate, create, getById } from "@services/video.service";
 import createError from 'http-errors';
 
 // Paginates the videos.

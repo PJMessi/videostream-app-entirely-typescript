@@ -1,5 +1,5 @@
-import { Video } from '#root/database/models/video.model';
-import { User } from '#root/database/models/user.model';
+import { Video } from '@root/database/models/video.model';
+import { User } from '@root/database/models/user.model';
 import fs from 'fs';
 import { exec } from 'child_process';
 

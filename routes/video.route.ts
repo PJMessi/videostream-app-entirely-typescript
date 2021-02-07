@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { createVideo, fetchVideo, paginateVideos } from '#root/controllers/video/video.controller';
-import { createValidation, paginateValidation } from '#root/controllers/video/video.validation';
-import authMiddleware from '#root/middlewares/auth.middleware';
+import { createVideo, fetchVideo, paginateVideos } from '@controllers/video/video.controller';
+import { createValidation, paginateValidation } from '@controllers/video/video.validation';
+import authMiddleware from '@middlewares/auth.middleware';
 
 const router = Router();
 

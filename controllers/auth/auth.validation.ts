@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
-import { getOne } from '#root/services/user.service';
+import { getOne } from '@services/user.service';
 import createError from 'http-errors';
 
-import validator from "#root/helpers/validator";
+import validator from "@root/helpers/validator";
 
 // validates the data for login function in auth.controller.
 export const loginValidation = async (
