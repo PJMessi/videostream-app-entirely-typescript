@@ -1,4 +1,4 @@
-import { Video } from '@root/database/models/video.model';
+import { Video, VideoAttributes, VideoAttributesForUpdate } from '@root/database/models/video.model';
 import { PaginationFilter, appendPaginationData, refineFilters, PaginationResult } from '@helpers/pagination.helper';
 import { Transaction } from 'sequelize/types';
 
@@ -53,7 +53,7 @@ export const getById = async (
 
 // Creates video from the given attributes.
 export const create = async (
-    attributes: { name: string, size: number, path: string, price: number },
+    attributes: VideoAttributes,
     transaction?: Transaction
 
 ): Promise<Video> => {
@@ -65,7 +65,7 @@ export const create = async (
 // Updates the given attributes of the given video.
 export const update = async (
     video: Video,
-    attributes: { name?: string, size?: number, path?: string, price?: number },
+    attributes: VideoAttributesForUpdate,
     transaction?: Transaction
 
 ): Promise<Video> => {

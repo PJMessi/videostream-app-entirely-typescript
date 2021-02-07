@@ -1,4 +1,4 @@
-import { User } from '@root/database/models/user.model';
+import { User, UserAttributes, UserAttributesForUpdate } from '@root/database/models/user.model';
 import { PaginationFilter, appendPaginationData, refineFilters, PaginationResult } from '@helpers/pagination.helper';
 import { Transaction } from 'sequelize/types';
 import bcrypt from 'bcrypt';
@@ -54,7 +54,7 @@ export const getById = async (
 
 // Creates user from the given attributes.
 export const create = async (
-    attributes: { name: string, email: string, password: string },
+    attributes: UserAttributes,
     transaction?: Transaction
 
 ): Promise<User> => {
@@ -69,7 +69,7 @@ export const create = async (
 // Updates the given attributes of the given user.
 export const update = async (
     user: User,
-    attributes: { name?: string, email?: string, password?: string },
+    attributes: UserAttributesForUpdate,
     transaction?: Transaction
 
 ): Promise<User> => {

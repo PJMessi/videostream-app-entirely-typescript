@@ -1,8 +1,8 @@
 import faker from 'faker';
-import { Video, VideoAttributes, VideoUpdateAttributes } from '../models/video.model';
+import { Video, VideoAttributes, VideoAttributesForUpdate } from '../models/video.model';
 
 // creates multiple videos.
-export const createVideos = async (amount: number, customAttributes?: VideoUpdateAttributes): Promise<Video[]> => {
+export const createVideos = async (amount: number, customAttributes?: VideoAttributesForUpdate): Promise<Video[]> => {
     let videos: Video[] = [];
 
     for (let i = 0; i < amount; i++) {
@@ -14,7 +14,7 @@ export const createVideos = async (amount: number, customAttributes?: VideoUpdat
 }
 
 // create single video.
-export const createVideo = async (customAttributes?: VideoUpdateAttributes): Promise<Video> => {
+export const createVideo = async (customAttributes?: VideoAttributesForUpdate): Promise<Video> => {
     const randomAttributes = generateRandomAttributes();
 
     customAttributes = customAttributes || {};
@@ -36,7 +36,7 @@ const generateRandomAttributes = (): VideoAttributes => {
 
 const generateFinalAttributes = (
     randomAttributes: VideoAttributes,
-    customAttributes: VideoUpdateAttributes
+    customAttributes: VideoAttributesForUpdate
 
 ): VideoAttributes => {
 

@@ -52,7 +52,7 @@ export type VideoAttributes = {
     updatedAt?: Date
 }
 
-export type VideoUpdateAttributes = {
+export type VideoAttributesForUpdate = {
     id?: number,
     name?: string,
     path?: string,
