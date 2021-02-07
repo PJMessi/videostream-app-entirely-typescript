@@ -80,7 +80,7 @@ describe('Authentication', () => {
 		it ('returns profile of the user that the bearer token belongs to.', async () => {
 			/** Creating test user. */
 			const user = await createUser();
-			const authToken = await user.generateToken();
+			const authToken = user.generateToken();
 
 			/** Calling API fetch profile. */
 			const profileResponse = await app.get('/auth/profile').set('Authorization', `Bearer ${authToken}`);

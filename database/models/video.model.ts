@@ -41,3 +41,23 @@ export class Video extends Model {
         return {...super.toJSON(), deletedAt: undefined};
     }
 }
+
+export type VideoAttributes = {
+    id?: number,
+    name: string,
+    path: string,
+    size: number,
+    price: number,
+    createdAt?: Date,
+    updatedAt?: Date
+}
+
+export type VideoUpdateAttributes = {
+    id?: number,
+    name?: string,
+    path?: string,
+    size?: number,
+    price?: number,
+    createdAt?: Date,
+    updatedAt?: Date
+}
