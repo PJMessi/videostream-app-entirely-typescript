@@ -1,37 +1,31 @@
 import { Video } from '@root/database/models/video.model';
 import { User } from '@root/database/models/user.model';
 import fs from 'fs';
-import { exec } from 'child_process';
+import sequelize from '@root/database/connection';
+//import { exec } from 'child_process';
 
+
+// Resets database by deleting rows from every model.
 export const resetDatabase = async () => {
     await User.destroy({ where: {} });
     await Video.destroy({ where: {}, force: true });
 }
 
-export const createTestDatabase = async () => {
-    console.log('Creating test database.');
-    // fs.createWriteStream('database.sqlite');
-    const file = await fs.promises.open('database.sqlite', 'w');
-    await file.close();
-}
-
-export const deleteTestDatabase = async () => {
-    console.log('Deleting test database.');
-    await fs.promises.unlink('database.sqlite');
-}
-
+// Makes the database tables up to date.
 export const migrateTables = async () => {
-    console.log('Migrating data to test database.');
-    await new Promise((resolve, reject) => {
+    await sequelize.sync();
 
-        const migrate = exec(
-            'sequelize db:migrate',
-            { env: process.env },
-            err => (err ? reject(err): resolve(true))
-        );
+    // console.log('Migrating data to test database.');
+    // await new Promise((resolve, reject) => {
 
-        // Forward stdout+stderr to this process
-        migrate && migrate.stdout && migrate.stdout.pipe(process.stdout);
-        migrate && migrate.stderr && migrate.stderr.pipe(process.stderr);
-    });
+    //     const migrate = exec(
+    //         'sequelize db:migrate',
+    //         { env: process.env },
+    //         err => (err ? reject(err): resolve(true))
+    //     );
+
+    //     // Forward stdout+stderr to this process
+    //     migrate && migrate.stdout && migrate.stdout.pipe(process.stdout);
+    //     migrate && migrate.stderr && migrate.stderr.pipe(process.stderr);
+    // });
 }

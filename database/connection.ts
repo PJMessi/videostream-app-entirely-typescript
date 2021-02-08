@@ -21,7 +21,7 @@ const sequelizeOptions: SequelizeOptions = {
         charset: "utf8",
         multipleStatements: true
     },
-    logging: true,
+    logging: false,
     models: [__dirname + '/models'],
     modelMatch: (filename, member) => {
         return filename.substring(0, filename.indexOf('.model')) === member.toLowerCase();
@@ -29,7 +29,7 @@ const sequelizeOptions: SequelizeOptions = {
 };
 
 let sequelize: Sequelize;
-if (process.env.NODE_ENV != 'test') {
+if (process.env.NODE_ENV == 'test') {
     sequelize =  new Sequelize({
         ...sequelizeOptions,
         dialect: 'sqlite',

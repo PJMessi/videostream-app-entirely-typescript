@@ -46,8 +46,6 @@ describe('Videos', () => {
                 assert.equal(videoResponse.createdAt, videos[15 - index - 1].createdAt.toISOString());
                 assert.equal(videoResponse.updatedAt, videos[15 - index - 1].updatedAt.toISOString());
             }
-
-            console.log(process.env.NODE_ENV)
         });
 
         it ('returns authentication error if bearer token is not provided or is invalid.', async () => {
