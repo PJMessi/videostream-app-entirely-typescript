@@ -1,4 +1,4 @@
-import { Video, VideoAttributes, VideoAttributesForUpdate } from '@root/database/models/video.model';
+import { Video, VideoAttributes, VideoAttributesForUpdate } from '@models/video.model';
 import { PaginationFilter, appendPaginationData, refineFilters, PaginationResult } from '@helpers/pagination.helper';
 import { Transaction } from 'sequelize/types';
 

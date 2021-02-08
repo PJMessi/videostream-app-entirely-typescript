@@ -1,4 +1,4 @@
-import { User, UserAttributes, UserAttributesForUpdate } from '@root/database/models/user.model';
+import { User, UserAttributes, UserAttributesForUpdate } from '@models/user.model';
 import { PaginationFilter, appendPaginationData, refineFilters, PaginationResult } from '@helpers/pagination.helper';
 import { Transaction } from 'sequelize/types';
 import bcrypt from 'bcrypt';

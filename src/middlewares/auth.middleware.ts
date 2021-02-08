@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 import { getById } from '@services/user.service';
 import accessEnv from "@helpers/accessEnv";
-import { User } from '@root/database/models/user.model';
+import { User } from '@models/user.model';
 
 declare global {
     namespace Express {

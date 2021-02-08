@@ -52,12 +52,12 @@
   },
   "_moduleAliases": {
     "@root": "./",
-    "@middlewares": "./middlewares",
-    "@services": "./services",
-    "@routes": "./routes",
-    "@controllers": "./controllers",
-    "@models": "./database/models",
-    "@factories": "./database/factories",
-    "@helpers": "./helpers"
+    "@middlewares": "./src/middlewares",
+    "@services": "./src/services",
+    "@routes": "./src/routes",
+    "@controllers": "./src/controllers",
+    "@models": "./src/database/models",
+    "@factories": "./src/database/factories",
+    "@helpers": "./src/helpers"
   }
 }

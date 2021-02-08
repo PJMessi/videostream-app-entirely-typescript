@@ -2,7 +2,7 @@ import "module-alias/register";
 import { assert } from 'chai';
 import request from 'supertest';
 import server from '@root/app';
-import { createUser } from '@root/database/factories/user.factory';
+import { createUser } from '@factories/user.factory';
 
 const app = request.agent(server);
 

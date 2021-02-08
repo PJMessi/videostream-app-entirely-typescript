@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { getOne } from '@services/user.service';
 import createError from 'http-errors';
-
 import validator from "@helpers/validator";
 
 // validates the data for login function in auth.controller.

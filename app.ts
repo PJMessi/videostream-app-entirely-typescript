@@ -2,9 +2,9 @@ import "module-alias/register";
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import router from './routes';
+import router from './src/routes';
 import errorMiddleware from '@middlewares/error.middleware';
-import sequelize from '@root/database/connection'
+import sequelize from '@root/src/database/connection'
 
 const app = express();
 app.use(express.json());

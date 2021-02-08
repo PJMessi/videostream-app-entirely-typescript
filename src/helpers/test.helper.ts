@@ -1,7 +1,7 @@
-import { Video } from '@root/database/models/video.model';
-import { User } from '@root/database/models/user.model';
+import { Video } from '@models/video.model';
+import { User } from '@models/user.model';
 import fs from 'fs';
-import sequelize from '@root/database/connection';
+import sequelize from '@root/src/database/connection';
 //import { exec } from 'child_process';
 
 
