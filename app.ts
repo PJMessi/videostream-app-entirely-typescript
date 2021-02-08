@@ -18,7 +18,7 @@ sequelize.authenticate()
 .then(() => { 
     console.log('Database connected.'); 
 
-    const PORT = 8080;
+    const PORT = process.env.PORT || 3000;
     app.listen(PORT, () => {
         console.log(`Server listening at ${PORT}`);
     });
