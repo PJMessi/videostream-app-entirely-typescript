@@ -1,15 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import { getOne } from '@services/user.service';
+import { getUserWithGivenEmail } from '@services/user.service';
 import createError from 'http-errors';
 import validator from "@helpers/validation.helper";
 
 // validates the data for login function in auth.controller.
-export const loginValidation = async (
-    request: Request,
-    response: Response, 
-    next: NextFunction
-
-) => {
+export const loginValidation = async ( request: Request, response: Response, next: NextFunction ) => {
 	try {
 		const { email, password } = request.body;
 
@@ -25,16 +20,9 @@ export const loginValidation = async (
     } catch (error) { next(error); }
 }
 
-
 // validates the data for register function in auth.controller.
-export const registerValidation = async (
-    request: Request,
-    response: Response, 
-    next: NextFunction
-
-) => {
+export const registerValidation = async ( request: Request, response: Response,  next: NextFunction ) => {
 	try {
-		// converting the email to lowercase.
 		if (request.body.email) request.body.email = request.body.email.toLowerCase();
 
 		const { name, email, password, password_confirmation } = request.body;
@@ -47,14 +35,16 @@ export const registerValidation = async (
 		
 		await validator({ name, email, password, password_confirmation }, rules);
 
-		const userWithTheEmail = await getOne({ email });
+		const userWithTheEmail = await getUserWithGivenEmail(email);
 		if (userWithTheEmail) {
-			throw new createError.UnprocessableEntity(JSON.stringify({
-				email: ['User with that email already exists.']
-			}));
+			throw new createError.UnprocessableEntity(
+				JSON.stringify({ email: ['User with that email already exists.'] })
+			);
 		}
         
 		next();
         
-	} catch (error) { next(error); }
+	} catch (error) { 
+		next(error); 
+	}
 }

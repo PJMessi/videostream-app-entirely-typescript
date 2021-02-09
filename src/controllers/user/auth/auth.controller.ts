@@ -1,33 +1,21 @@
 import { NextFunction, Request, Response } from "express";
-import { getOne, create } from '@services/user.service';
-import createError from 'http-errors';
-import bcrypt from 'bcrypt';
+import { registerUser, loginUser } from '@services/user.service';
 
-// Genrates auth token if the credentials are correct.
-export const login = async (
-    request: Request,
-    response: Response,
-    next: NextFunction
-
-) => {
+/**
+ * Checks if user with given email and password exists. If it does, returns user data and auth token.
+ * @param request 
+ * @param response 
+ * @param next 
+ */
+export const login = async ( request: Request, response: Response, next: NextFunction ) => {
     try {
         const { email, password } = request.body;
 
-        const user = await getOne({ email });
-        if (!user) {
-            throw new createError.Unauthorized('Invalid credentials.');
-        }
-
-        const doesPasswordMatch = await bcrypt.compare(password, user.password); 
-        if (!doesPasswordMatch) {
-            throw new createError.Unauthorized('Invalid credentials.');
-        }
-
-        const token = user.generateToken();
+        const { userData, authToken } = await loginUser({ email, password });
 
         return response.json({
-            message: 'Auth token.',
-            data: { user, token }
+            success: true,
+            data: { user: userData, token: authToken }
         });
 
     } catch (error) {
@@ -35,44 +23,43 @@ export const login = async (
     }
 }
 
-// Creates new user form the given data.
-export const register = async (
-    request: Request,
-    response: Response,
-    next: NextFunction
-
-) => {
+/**
+ * Creates new user. Returns user data and auth token.
+ * @param request 
+ * @param response 
+ * @param next 
+ */
+export const register = async ( request: Request, response: Response, next: NextFunction ) => {
     try {
-        const attributes = request.body;
+        const { name, email, password } = request.body;
 
-        const user = await create(attributes);
-
-        const token = user.generateToken();
+        const { userData, authToken } = await registerUser({ name, email, password });
 
         return response.status(201).json({
-            message: 'Registered user with auth token.',
-            data: { user, token }
+            success: true,
+            data: { user: userData, token: authToken }
         });
-
+        
     } catch (error) {
         next(error);
     }
 }
 
-// Returns the data of the logged in user.
-export const profile = async (
-    request: Request,
-    response: Response,
-    next: NextFunction
-
-) => {
-
+/**
+ * Returns the data of currently logged in user.
+ * @param request 
+ * @param response 
+ * @param next 
+ */
+export const profile = async ( request: Request, response: Response, next: NextFunction ) => {
     try {
         const user = request.auth.user;
 
+        const userData = user?.toJSON();
+
         return response.json({
-            message: 'Data of the auth user.',
-            data: { user }
+            success: true,
+            data: { user: userData }
         });
         
     } catch (error) {

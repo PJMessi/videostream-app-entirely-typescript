@@ -1,103 +1,62 @@
-import { User, UserAttributes, UserAttributesForUpdate } from '@models/user.model';
-import { PaginationFilter, appendPaginationData, refineFilters, PaginationResult } from '@helpers/pagination.helper';
-import { Transaction } from 'sequelize/types';
+import { User, UserAttributes } from "../database/models/user.model";
 import bcrypt from 'bcrypt';
+import createError from 'http-errors';
 
-// Paginates the result according to the given filters.
-export const paginate = async (
-    filter: PaginationFilter = {}
+/**
+ * Registers new user. Returns user data and auth token.
+ * @param userAttributes
+ */
+export const registerUser = async (userAttributes: UserAttributes): 
+Promise<{ userData: object, authToken: string }> => {
 
-): Promise<PaginationResult> => {
+    userAttributes.password = await bcrypt.hash(userAttributes.password, 10);
 
-    const refinedFilter = refineFilters(filter);
+    const user = await User.create(userAttributes);
 
-    let { limit, page, offset, where, include, order } = refinedFilter;
-    const videos = await User.findAndCountAll({ limit, offset, where, include, order });
+    const authToken = user.generateToken();
 
-    const paginationResult = appendPaginationData(videos, limit, page);
-
-    return paginationResult;
-}
-
-// Fetches all the videos without pagination.
-export const getAll = async (
-    where?: object, 
-    include?: string[]
-
-): Promise<User[]> => {
-
-    const videos = await User.findAll({ where, include });
-    return videos;
-}
-
-// Fetches single user.
-export const getOne = async (
-    where?: object, 
-    include?: string[]
-
-): Promise<User|null> => {
-
-    const user = await User.findOne({ where, include});
-    return user;
-}
-
-// Fetch user by id.
-export const getById = async (
-    id: number,
-    include?: string[]
-
-): Promise<User|null> => {
-
-    const user = await User.findByPk(id, {include});
-    return user;
-}
-
-// Creates user from the given attributes.
-export const create = async (
-    attributes: UserAttributes,
-    transaction?: Transaction
-
-): Promise<User> => {
-
-    // hashing password.
-    attributes.password = await bcrypt.hash(attributes.password, 10);
-
-    const user = await User.create(attributes, { transaction });
-    return user;
-}
-
-// Updates the given attributes of the given user.
-export const update = async (
-    user: User,
-    attributes: UserAttributesForUpdate,
-    transaction?: Transaction
-
-): Promise<User> => {
-
-    // hasing password if password is to be updated.
-    if (attributes.password) {
-        attributes.password = await bcrypt.hash(attributes.password, 10);
+    return {
+        userData: user.toJSON(),
+        authToken
     }
-
-    return user.update(attributes, { transaction });
 }
 
-// Soft deletes the given user.
-export const destroy = async (
-    user: User,
-    transaction?: Transaction
+/**
+ * Checks if user with credentials exists. If it does, returns user data and auth token.
+ * @param userCredential 
+ */
+export const loginUser = async (userCredential: { email: string, password: string }): 
+Promise<{ userData: object, authToken: string }> => {
 
-) => {
+    const user = await User.findOne({ where: { email: userCredential.email } });
+    if (!user) throw new createError.Unauthorized('Invalid credentials.');
 
-    await user.destroy({ transaction });
+    const doesPasswordMatch = await bcrypt.compare(userCredential.password, user.password); 
+    if (!doesPasswordMatch)
+        throw new createError.Unauthorized('Invalid credentials.');
+    
+    const authToken = user.generateToken();
+
+    return {
+        userData: user.toJSON(),
+        authToken
+    }
 }
 
-// Hard deletes the given user.
-export const hardDestroy = async (
-    user: User,
-    transaction?: Transaction
+/**
+ * Checks if user with given id exists. If it does, returns user, else returns null.
+ * @param id 
+ */
+export const getUserWithGivenId = async (id: number): Promise<User|null> => {
+    const user = await User.findByPk(id);
+    return user;
+}
 
-) => {
-
-    await user.destroy({ force: true, transaction });
+/**
+ * Checks if user with given email exists. If it does, returns user, else returns null.
+ * @param email 
+ */
+export const getUserWithGivenEmail = async (email: string): Promise<User|null> => {
+    const user = await User.findOne({ where: { email } });
+    return user;
 }
