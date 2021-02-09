@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import validator from "@helpers/validator";
+import validator from "@helpers/validation.helper";
 import multer from 'multer';
 import createError from 'http-errors';
 
