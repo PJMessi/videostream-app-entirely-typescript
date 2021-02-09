@@ -4,7 +4,7 @@ export default (error: any, request: Request, response: Response, next: NextFunc
 	
     const status = error.status || 500;
 
-	if (status == 500) console.log(error);
+	if (status == 500) console.log(error.stack);
 
 	if (status == 422) {
         return response.status(422).json({
