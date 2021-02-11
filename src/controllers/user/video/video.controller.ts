@@ -8,7 +8,7 @@ import createError from 'http-errors';
  * @param response 
  * @param next 
  */
-export const paginateVideos = async (request: Request, response: Response, next: NextFunction) => {
+export const paginate = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const { limit, page, sortBy, sortOrder }: 
         { limit?: number, page?: number, sortBy?: string, sortOrder?: 'ASC'|'DESC' } = request.query;
@@ -31,7 +31,7 @@ export const paginateVideos = async (request: Request, response: Response, next:
  * @param response 
  * @param next 
  */
-export const fetchVideo = async (request: Request, response: Response, next: NextFunction) => {
+export const show = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const videoId = parseInt(request.params.videoId);
     

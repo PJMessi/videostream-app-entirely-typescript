@@ -1,5 +1,6 @@
-import { Video, VideoAttributes } from "@models/video.model";
+import { Video } from "@models/video.model";
 import { appendPaginationData, PaginationFilter, PaginationResult, refineFiltersForPagination } from "@helpers/pagination.helper";
+import { saveVideoInLocalStorage } from '@helpers/videoupload.helper';
 
 /**
  * Paginates videos based on given filters.
@@ -30,8 +31,15 @@ export const fetchVideoById = async (id: number): Promise<Video|null> => {
  * Creates new video from given data.
  * @param attributes 
  */
-export const createVideo = async (attributes: VideoAttributes): Promise<Video> => {
-    const video = await Video.create(attributes);
+export const uploadVideo = async (attributes: {name: string, price: number}, videoFile: Express.Multer.File): 
+Promise<Video> => {
+    const { path, size } = await saveVideoInLocalStorage(videoFile);
+
+    const video = await Video.create({ 
+        name: attributes.name,
+        price: attributes.price,
+        path, size
+     });
 
     return video;
 }
