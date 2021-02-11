@@ -1,94 +1,37 @@
-import { Video, VideoAttributes, VideoAttributesForUpdate } from '@models/video.model';
-import { PaginationFilter, appendPaginationData, refineFilters, PaginationResult } from '@helpers/pagination.helper';
-import { Transaction } from 'sequelize/types';
+import { Video, VideoAttributes } from "@models/video.model";
+import { appendPaginationData, PaginationFilter, PaginationResult, refineFiltersForPagination } from "@helpers/pagination.helper";
 
-// Paginates the result according to the given filters.
-export const paginate = async (
-    filter: PaginationFilter = {}
+/**
+ * Paginates videos based on given filters.
+ * @param paginationFilter 
+ */
+export const paginateVideosForUsers = async (paginationFilter: PaginationFilter): 
+Promise<PaginationResult> => {
+    const {limit, page, offset, order} = refineFiltersForPagination(paginationFilter);
 
-): Promise<PaginationResult> => {
+    const paginatedVideos = await Video.findAndCountAll({limit, offset, order});
 
-    const refinedFilter = refineFilters(filter);
+    const paginatedResult = appendPaginationData(paginatedVideos, limit, page);
 
-    let { limit, page, offset, where, include, order } = refinedFilter;
-    const videos = await Video.findAndCountAll({ limit, offset, where, include, order });
-
-    const paginationResult = appendPaginationData(videos, limit, page);
-
-    return paginationResult;
+    return paginatedResult;
 }
 
-// Fetches all the videos without pagination.
-export const getAll = async (
-    where?: object, 
-    include?: string[]
+/**
+ * Fetches video with given id.
+ * @param id 
+ */
+export const fetchVideoById = async (id: number): Promise<Video|null> => {
+    const video = await Video.findByPk(id);
 
-): Promise<Video[]> => {
-
-    const videos = await Video.findAll({ where, include });
-    return videos;
-}
-
-// Fetches single video.
-export const getOne = async (
-    where?: object, 
-    include?: string[]
-
-): Promise<Video|null> => {
-
-    const video = await Video.findOne({ where, include});
     return video;
 }
 
-// Fetch video by id.
-export const getById = async (
-    id: number,
-    include?: string[]
+/**
+ * Creates new video from given data.
+ * @param attributes 
+ */
+export const createVideo = async (attributes: VideoAttributes): Promise<Video> => {
+    const video = await Video.create(attributes);
 
-): Promise<Video|null> => {
-
-    const video = await Video.findByPk(id, {include});
     return video;
-}
-
-// Creates video from the given attributes.
-export const create = async (
-    attributes: VideoAttributes,
-    transaction?: Transaction
-
-): Promise<Video> => {
-
-    const video = await Video.create(attributes, { transaction });
-    return video;
-}
-
-// Updates the given attributes of the given video.
-export const update = async (
-    video: Video,
-    attributes: VideoAttributesForUpdate,
-    transaction?: Transaction
-
-): Promise<Video> => {
-
-    return video.update(attributes, { transaction });
-}
-
-// Soft deletes the given video.
-export const destroy = async (
-    video: Video,
-    transaction?: Transaction
-
-) => {
-
-    await video.destroy({ transaction });
-}
-
-// Hard deletes the given video.
-export const hardDestroy = async (
-    video: Video,
-    transaction?: Transaction
-
-) => {
-
-    await video.destroy({ force: true, transaction });
 }

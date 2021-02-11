@@ -1,21 +1,22 @@
 import { NextFunction, Request, Response } from "express";
-import { paginate, create, getById } from "@services/video.service";
+import { paginateVideosForUsers, fetchVideoById } from "@services/video.service";
 import createError from 'http-errors';
 
-// Paginates the videos.
-export const paginateVideos = async (
-    request: Request,
-    response: Response,
-    next: NextFunction
-
-) => {
+/**
+ * Paginates the videos.
+ * @param request 
+ * @param response 
+ * @param next 
+ */
+export const paginateVideos = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const paginationFilters = request.query;
+        const { limit, page, sortBy, sortOrder }: 
+        { limit?: number, page?: number, sortBy?: string, sortOrder?: 'ASC'|'DESC' } = request.query;
 
-        const paginatedVideos = await paginate(paginationFilters);
+        const paginatedVideos = await paginateVideosForUsers({limit, page, sortBy, sortOrder});
 
         return response.json({
-            message: 'Paginated videos.',
+            success: true,
             data: paginatedVideos
         });
 
@@ -24,23 +25,22 @@ export const paginateVideos = async (
     }
 }
 
-// Fetch video with given id.
-export const fetchVideo = async (
-    request: Request,
-    response: Response,
-    next: NextFunction
-
-) => {
+/**
+ * Fetches video with given id.
+ * @param request 
+ * @param response 
+ * @param next 
+ */
+export const fetchVideo = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const videoId = parseInt(request.params.videoId);
     
-        const video = await getById(videoId);
-        if (!video) {
+        const video = await fetchVideoById(videoId);
+        if (!video)
             throw new createError.NotFound('Video with the given id not found.');
-        }
         
         return response.json({
-            message: 'Video with given id.',
+            success: true,
             data: { video }
         });
 

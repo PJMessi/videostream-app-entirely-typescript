@@ -1,23 +1,18 @@
 import { NextFunction, Request, Response } from "express";
-import { create } from "@services/video.service";
+import { createVideo as createNewVideo } from "@services/video.service";
 import path from 'path';
 import { promises as fs } from 'fs';
 
 // Creates new video.
-export const createVideo = async (
-    request: Request,
-    response: Response,
-    next: NextFunction
-
-) => {
+export const createVideo = async (request: Request, response: Response, next: NextFunction) => {
     try {
-        const { name, price } = request.body;
-        const { path, size } = await saveVideo(request.file);
+        const { name, price }: { name: string, price: number } = request.body;
+        const { path, size }: { path: string, size: number } = await saveVideo(request.file);
 
-        const video = await create({ name, price, size, path });
+        const video = await createNewVideo({ name, price, size, path });
     
         return response.json({
-            message: 'Created video.',
+            success: true,
             data: { video } 
         });
 
@@ -25,7 +20,6 @@ export const createVideo = async (
         next(error);
     }
 }
-
 
 // Generates a unique file name.
 const generateUniqueFileName = (originalFileName: string): string => {
@@ -50,7 +44,7 @@ const saveVideo = async (fileObject: Express.Multer.File): Promise<{ path: strin
 }
 
 // Creates directory if it doesnt exist.
-const generateDirectory = async (directory: string) => {
+const generateDirectory = async (directory: string): Promise<void> => {
     await fs.stat(directory)
     .catch(async (err) => {
         await fs.mkdir(directory, { recursive: true });

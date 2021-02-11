@@ -1,5 +1,4 @@
 import { Model } from "sequelize-typescript";
-import { Transaction } from "sequelize";
 
 export type PaginationFilter = {
     limit?: number, 
@@ -35,13 +34,8 @@ export type SequelizeDataWithCount = {
     count: number, rows: Model[]
 }
 
-export const appendPaginationData = (
-    dataWithCount: SequelizeDataWithCount, 
-    limit: number, 
-    page: number
-
-): PaginationResult => {
-
+export const appendPaginationData = (dataWithCount: SequelizeDataWithCount, limit: number, page: number): 
+PaginationResult => {
     const total = dataWithCount.count
     const lastPage = Math.ceil(total/limit);
     const currentPage = page;
@@ -55,18 +49,18 @@ export const appendPaginationData = (
     return { ...dataWithCount, limit, page, lastPage, currentPage, from, perPage, to };
 }
 
-export const refineFilters = (filter: PaginationFilter): RefinedPaginationFilter => {
-        
+/**
+ * Takes the filter and refines for pagination process.
+ * @param filter 
+ */
+export const refineFiltersForPagination = (filter: PaginationFilter): RefinedPaginationFilter => {
     const limit = filter.limit || 10;
     const page = filter.page || 1;
-
     const offset = limit * (page - 1);
     const where = filter.where || {};
     const include = filter.include || [];
-
     const sortOrder = filter.sortOrder || 'DESC';
     const sortBy = filter.sortBy || 'id';
-    
     const orderFormat1: [string, 'ASC'|'DESC'] = [sortBy, sortOrder];
     const order = [orderFormat1]
 
