@@ -2,7 +2,7 @@ import "module-alias/register";
 import { assert } from 'chai';
 import request from 'supertest';
 import server from '@root/app';
-import { createUser } from '@factories/user.factory';
+import userFactory from '@factories/user.factory';
 
 const app = request.agent(server);
 
@@ -55,7 +55,7 @@ describe('Authentication', () => {
 
 		it ('returns validation error if the email is already taken.', async () => {
 			/** Creating test user. */
-			const user = await createUser();
+			const user = await userFactory.createSingle();
 
 			// console.log(user);
 
@@ -79,7 +79,7 @@ describe('Authentication', () => {
 
 		it ('returns profile of the user that the bearer token belongs to.', async () => {
 			/** Creating test user. */
-			const user = await createUser();
+			const user = await userFactory.createSingle();
 			const authToken = user.generateToken();
 
 			/** Calling API fetch profile. */
@@ -110,7 +110,7 @@ describe('Authentication', () => {
 
 		it ('returns user profile along with bearer token if correct credentials is provided.', async () => {
 			/** Creating test user. */
-			const user = await createUser();
+			const user = await userFactory.createSingle();
 
 			/** Calling API to get bearer token. */
 			const userData = {

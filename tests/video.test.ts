@@ -2,22 +2,21 @@ import "module-alias/register";
 import { assert } from 'chai';
 import request from 'supertest';
 import server from '@root/app';
-import { createUser } from '@factories/user.factory';
-import { createVideo, createVideos } from '@factories/video.factory';
+import userFactory from '@factories/user.factory';
+import videoFactory from '@factories/video.factory';
 
 const app = request.agent(server);
 
 describe('Videos', () => {
-
 	describe('GET /videos', () => {
 
 		it ('returns paginated list of videos.', async () => {
             /** Creating a user. */
-            const user = await createUser();
+            const user = await userFactory.createSingle();
             const authToken = user.generateToken();
 
             /** Creating 15 videos. */
-            const videos = await createVideos(15);
+            const videos = await videoFactory.createMultiple(15);
 
             /** Calling API to fetch paginated list of videos. */
 			const paginatedVideosResponse = await app.get('/videos').set('Authorization', `Bearer ${authToken}`);
@@ -64,11 +63,11 @@ describe('Videos', () => {
 
         it ('returns the video with given id.', async () => {
             /** Creating a user. */
-            const user = await createUser();
+            const user = await userFactory.createSingle();
             const authToken = user.generateToken();
 
             /** Creating a video. */
-            const video = await createVideo();
+            const video = await videoFactory.createSingle();
 
             /** Calling API to fetch video with given id. */
             const videoResponse = await app.get(`/videos/${video.id}`).set('Authorization', `Bearer ${authToken}`);

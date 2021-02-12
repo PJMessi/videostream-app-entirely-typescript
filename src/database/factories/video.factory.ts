@@ -1,44 +1,17 @@
+import { Video } from "../models/video.model";
 import faker from 'faker';
-import { Video, VideoAttributes, VideoAttributesForUpdate } from '../models/video.model';
+import Factory from "./factory";
 
-// creates multiple videos.
-export const createVideos = async (amount: number, customAttributes?: VideoAttributesForUpdate): Promise<Video[]> => {
-    let videos: Video[] = [];
+class VideoFactory extends Factory<Video> {
 
-    for (let i = 0; i < amount; i++) {
-        const video = await createVideo(customAttributes);
-        videos.push(video)
-    }
+    model = Video;
 
-    return videos;
-}
-
-// create single video.
-export const createVideo = async (customAttributes?: VideoAttributesForUpdate): Promise<Video> => {
-    const randomAttributes = generateRandomAttributes();
-
-    customAttributes = customAttributes || {};
-
-    const finalAttributes = generateFinalAttributes(randomAttributes, customAttributes);
-
-    const video = await Video.create(finalAttributes);
-    return video;
-}
-
-const generateRandomAttributes = (): VideoAttributes => {
-    return {
+    attributes = {
         name: faker.name.findName(),
         size: faker.random.number({ min: 1, max: 99999 }),
         price: faker.random.number({ min: 1, max: 1000 }),
         path: `uploads/videos/${faker.system.fileName()}`
-    };
+    }
 }
 
-const generateFinalAttributes = (
-    randomAttributes: VideoAttributes,
-    customAttributes: VideoAttributesForUpdate
-
-): VideoAttributes => {
-
-    return { ...randomAttributes, ...customAttributes }
-}
+export default new VideoFactory;
