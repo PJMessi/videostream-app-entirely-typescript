@@ -7,6 +7,6 @@ const router = Router();
 
 router.get('/', authMiddleware, paginateValidation, paginate);
 router.get('/:videoId', authMiddleware, show);
-router.get('/:videoId/stream', streamValidation, stream);
+router.get('/:videoId/stream', authMiddleware, streamValidation, stream);
 
 export default router;
