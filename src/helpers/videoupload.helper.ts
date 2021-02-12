@@ -14,8 +14,7 @@ export const saveVideoInLocalStorage = async (fileObject: Express.Multer.File): 
 
     const filePath = `uploads/videos/${fileName}`; 
     
-    if (process.env.NODE_ENV !== 'test')
-        await fs.writeFile(filePath, fileObject.buffer);
+    await fs.writeFile(filePath, fileObject.buffer);
 
     return { path: filePath, size: fileObject.size }
 }

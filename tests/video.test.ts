@@ -37,7 +37,6 @@ describe('Videos', () => {
             for (let [index, videoResponse] of videosResponse.entries()) {
                 assert.equal(videoResponse.id, videos[15 - index - 1].id);
                 assert.equal(videoResponse.name, videos[15 - index - 1].name);
-                assert.equal(videoResponse.path, videos[15 - index - 1].path);
                 assert.equal(videoResponse.price, videos[15 - index - 1].price);
                 assert.equal(videoResponse.size, videos[15 - index - 1].size);
                 assert.equal(videoResponse.createdAt, videos[15 - index - 1].createdAt.toISOString());
@@ -75,7 +74,6 @@ describe('Videos', () => {
             // checking response.
             assert.equal(videoResponseData.id, video.id);
             assert.equal(videoResponseData.name, video.name);
-            assert.equal(videoResponseData.path, video.path);
             assert.equal(videoResponseData.price, video.price);
             assert.equal(videoResponseData.size, video.size);
             assert.equal(videoResponseData.createdAt, video.createdAt.toISOString());
