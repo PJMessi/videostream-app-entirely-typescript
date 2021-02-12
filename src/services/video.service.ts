@@ -1,6 +1,7 @@
 import { Video } from "@models/video.model";
 import { appendPaginationData, PaginationFilter, PaginationResult, refineFiltersForPagination } from "@helpers/pagination.helper";
 import { saveVideoInLocalStorage } from '@helpers/videoupload.helper';
+import { determineStartAndEndBytes, VideoStreamData } from '@helpers/videoStream.helper';
 
 /**
  * Paginates videos based on given filters.
@@ -42,4 +43,22 @@ Promise<Video> => {
      });
 
     return video;
+}
+
+/**
+ * Prepares video stream data for video with given id.
+ * Returns null if video with the given id does not exist.
+ * @param videoId 
+ * @param rangeHeader 
+ */
+export const streamVideo = async (videoId: number, rangeHeader: string): Promise<null | VideoStreamData> => {
+    const video = await Video.findByPk(videoId);
+    if (!video) return null;
+
+    const videoPathInServer = `${global.appRoot}/${video.path}`;
+
+    const byteRange = determineStartAndEndBytes(video.size, rangeHeader);
+    const videoPath = videoPathInServer;
+
+    return { byteRange, videoPath, videoSize: video.size };
 }

@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import { paginateVideosForUsers, fetchVideoById } from "@services/video.service";
+import { paginateVideosForUsers, fetchVideoById, streamVideo } from "@services/video.service";
 import createError from 'http-errors';
+import fs from 'fs';
 
 /**
  * Paginates the videos.
@@ -43,6 +44,40 @@ export const show = async (request: Request, response: Response, next: NextFunct
             success: true,
             data: { video }
         });
+
+    } catch (error) {
+        next(error);
+    }
+}
+
+/**
+ * Streams the video with given id. 
+ * @param request 
+ * @param response 
+ * @param next
+ */
+export const stream = async (request: Request, response: Response, next: NextFunction) => {
+    try {
+        const rangeHeader = request.headers.range!;
+        console.log(rangeHeader);
+        const videoId = parseInt(request.params.videoId);
+        const videoStreamData = await streamVideo(videoId, rangeHeader);
+        if (!videoStreamData) 
+            throw new createError.NotFound('Video with given id not found.');
+    
+        const { byteRange, videoPath, videoSize } = videoStreamData;
+        const [startByte, endByte] = byteRange;
+    
+        const headers = {
+            'Content-Range': `bytes ${startByte}-${endByte}/${videoSize}`,
+            'Accept-Ranges': 'bytes',
+            'Content-Length': endByte - startByte + 1,
+            'Content-Type': 'video/mp4',
+        };
+        
+        const readStream = fs.createReadStream(videoPath, { start: startByte, end: endByte });
+        response.writeHead(206, headers);
+        readStream.pipe(response);
 
     } catch (error) {
         next(error);

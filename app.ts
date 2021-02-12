@@ -7,6 +7,7 @@ import errorMiddleware from '@middlewares/error.middleware';
 import sequelize from '@root/src/database/connection'
 import path from 'path';
 import { User } from "./src/database/models/user.model";
+import corsMiddleware from '@middlewares/cors.middleware';
 
 // Declaring custom value types.
 declare global {
@@ -34,6 +35,8 @@ global.appRoot = path.resolve(__dirname);
 const app = express();
 
 app.use(express.json());
+
+app.use(corsMiddleware);
 
 app.use(router);
 

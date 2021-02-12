@@ -1,13 +1,14 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, request, Request, Response } from "express";
 import validator from "@helpers/validation.helper";
+import createError from 'http-errors';
 
-// validates the data for paginate function in video.controller.
-export const paginateValidation = async (
-    request: Request,
-    response: Response, 
-    next: NextFunction
-
-) => {
+/**
+ * Validates request data for `paginate` function of video.controller.
+ * @param request 
+ * @param response 
+ * @param next 
+ */
+export const paginateValidation = async ( request: Request, response: Response, next: NextFunction) => {
 	try {
 		const { limit, page, sortOrder, sortBy } = request.query;
 
@@ -22,5 +23,24 @@ export const paginateValidation = async (
 	        
 		next();
         
-    } catch (error) { next(error); }
+    } catch (error) { 
+		next(error);
+	 }
+}
+
+/**
+ * Validates request data for `stream` function of video.controller.
+ * @param request 
+ * @param response 
+ * @param next 
+ */
+export const streamValidation = async ( request: Request, response: Response, next: NextFunction ) => {
+	try {
+		const { range } = request.headers;
+
+		if (!range) throw new createError.BadRequest('Range header missing.');
+
+	} catch (error) {
+		next(error);
+	}
 }
