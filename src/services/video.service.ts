@@ -2,6 +2,7 @@ import { Video } from "@models/video.model";
 import { appendPaginationData, PaginationFilter, PaginationResult, refineFiltersForPagination } from "@helpers/pagination.helper";
 import { saveVideoInLocalStorage } from '@helpers/videoupload.helper';
 import { determineStartAndEndBytes, VideoStreamData } from '@helpers/videoStream.helper';
+import { promises as fs } from 'fs';
 
 /**
  * Paginates videos based on given filters.
@@ -61,4 +62,19 @@ export const streamVideo = async (videoId: number, rangeHeader: string): Promise
     const videoPath = videoPathInServer;
 
     return { byteRange, videoPath, videoSize: video.size };
+}
+
+/**
+ * Removes video from the server and database.
+ * Returns null if video with the given id does not exist.
+ * @param videoId 
+ */
+export const deleteVideo = async (videoId: number): Promise<true|null> => {
+    const video = await Video.findByPk(videoId);
+    if (!video) return null;
+
+    await fs.unlink(`${global.appRoot}/${video.path}`);
+
+    await video?.destroy();
+    return true;
 }
