@@ -38,7 +38,7 @@ export class Video extends Model {
     price!: number
 
     toJSON() {
-        return {...super.toJSON(), deletedAt: undefined};
+        return {...super.toJSON(), path: undefined, deletedAt: undefined};
     }
 }
 
