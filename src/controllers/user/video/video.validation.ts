@@ -40,6 +40,8 @@ export const streamValidation = async ( request: Request, response: Response, ne
 
 		if (!range) throw new createError.BadRequest('Range header missing.');
 
+		next();
+
 	} catch (error) {
 		next(error);
 	}

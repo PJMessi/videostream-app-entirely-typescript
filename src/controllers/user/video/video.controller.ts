@@ -59,7 +59,7 @@ export const show = async (request: Request, response: Response, next: NextFunct
 export const stream = async (request: Request, response: Response, next: NextFunction) => {
     try {
         const rangeHeader = request.headers.range!;
-        console.log(rangeHeader);
+        
         const videoId = parseInt(request.params.videoId);
         const videoStreamData = await streamVideo(videoId, rangeHeader);
         if (!videoStreamData) 
