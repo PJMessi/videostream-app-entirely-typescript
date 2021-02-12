@@ -21,20 +21,18 @@ describe('Videos', () => {
             /** Calling API to fetch paginated list of videos. */
 			const paginatedVideosResponse = await app.get('/videos').set('Authorization', `Bearer ${authToken}`);
             assert.equal(paginatedVideosResponse.status, 200);
+            const paginatedVideosResponseData = paginatedVideosResponse.body.data;
             
-            // checking response.
-            const paginatedDataResponse = paginatedVideosResponse.body.data;
+            // checking pagination meta data in response.
+            assert.equal(paginatedVideosResponseData.count, 15);
+            assert.equal(paginatedVideosResponseData.lastPage, 2);
+            assert.equal(paginatedVideosResponseData.currentPage, 1);
+            assert.equal(paginatedVideosResponseData.from, 1);
+            assert.equal(paginatedVideosResponseData.perPage, 10);
+            assert.equal(paginatedVideosResponseData.to, 10);
 
-            // checking pagination meta data.
-            assert.equal(paginatedDataResponse.count, 15);
-            assert.equal(paginatedDataResponse.lastPage, 2);
-            assert.equal(paginatedDataResponse.currentPage, 1);
-            assert.equal(paginatedDataResponse.from, 1);
-            assert.equal(paginatedDataResponse.perPage, 10);
-            assert.equal(paginatedDataResponse.to, 10);
-
-            // checking videos.
-            const videosResponse = paginatedDataResponse.rows;
+            // checking videos in response.
+            const videosResponse = paginatedVideosResponseData.rows;
             assert.equal(10, videosResponse.length);
             for (let [index, videoResponse] of videosResponse.entries()) {
                 assert.equal(videoResponse.id, videos[15 - index - 1].id);
@@ -72,9 +70,9 @@ describe('Videos', () => {
             /** Calling API to fetch video with given id. */
             const videoResponse = await app.get(`/videos/${video.id}`).set('Authorization', `Bearer ${authToken}`);
             assert.equal(videoResponse.status, 200);
+            const videoResponseData = videoResponse.body.data.video;
 
             // checking response.
-            const videoResponseData = videoResponse.body.data.video;
             assert.equal(videoResponseData.id, video.id);
             assert.equal(videoResponseData.name, video.name);
             assert.equal(videoResponseData.path, video.path);
@@ -82,6 +80,16 @@ describe('Videos', () => {
             assert.equal(videoResponseData.size, video.size);
             assert.equal(videoResponseData.createdAt, video.createdAt.toISOString());
             assert.equal(videoResponseData.updatedAt, video.updatedAt.toISOString());
+        });
+
+        it ('returns not found error if video with the given id does not exist', async () => {
+            /** Creating a user. */
+            const user = await userFactory.createSingle();
+            const authToken = user.generateToken();
+
+            /** Calling API to fetch video with given id. */
+            const videoResponse = await app.get(`/videos/1111111111`).set('Authorization', `Bearer ${authToken}`);
+            assert.equal(videoResponse.status, 404);
         });
 
         it ('returns authentication error if bearer token is not provided or is invalid.', async () => {

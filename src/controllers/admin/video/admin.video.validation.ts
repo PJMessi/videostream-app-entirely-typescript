@@ -8,13 +8,13 @@ const uploadMiddleware = multer();
 // form-data/multipart middleware.
 export const videoUploadValidation = uploadMiddleware.single('video'); 
 
-// validates the data for create function in video.controller.
-export const createValidation = async (
-    request: Request,
-    response: Response, 
-    next: NextFunction
-
-) => {
+/**
+ * Validation for `store` function in adminVideo.controller.
+ * @param request 
+ * @param response 
+ * @param next 
+ */
+export const storeValidation = async ( request: Request, response: Response, next: NextFunction ) => {
 	try {
 		const { name, size, price, path } = request.body;
         const videoFile = request.file;

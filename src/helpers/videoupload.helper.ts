@@ -3,6 +3,7 @@ import { promises as fs } from 'fs';
 
 /**
  * Saves video in server with unique name.
+ * For test environment, video is not saved in server.
  * @param fileObject 
  */
 export const saveVideoInLocalStorage = async (fileObject: Express.Multer.File): Promise<{ path: string, size: number }> => {
@@ -11,8 +12,10 @@ export const saveVideoInLocalStorage = async (fileObject: Express.Multer.File): 
     const videoDirectory = `${global.appRoot}/uploads/videos`;
     await generateDirectory(videoDirectory);
 
-    const filePath = `uploads/videos/${fileName}`;    
-    await fs.writeFile(filePath, fileObject.buffer);
+    const filePath = `uploads/videos/${fileName}`; 
+    
+    if (process.env.NODE_ENV !== 'test')
+        await fs.writeFile(filePath, fileObject.buffer);
 
     return { path: filePath, size: fileObject.size }
 }
