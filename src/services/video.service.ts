@@ -75,6 +75,6 @@ export const deleteVideo = async (videoId: number): Promise<true|null> => {
 
     await fs.unlink(`${global.appRoot}/${video.path}`);
 
-    await video?.destroy();
+    await video.destroy();
     return true;
 }

@@ -7,16 +7,21 @@ import { promises as fs } from 'fs';
  * @param fileObject 
  */
 export const saveVideoInLocalStorage = async (fileObject: Express.Multer.File): Promise<{ path: string, size: number }> => {
-    const fileName = generateUniqueFileName(fileObject.originalname);
+    const videoName = generateUniqueFileName(fileObject.originalname);
 
-    const videoDirectory = `${global.appRoot}/uploads/videos`;
+    // directory within app.
+    const appVideoDirectory = "uploads/videos";
+
+    // complete system directory.
+    const videoDirectory = `${global.appRoot}/${appVideoDirectory}`;
+
     await generateDirectory(videoDirectory);
 
-    const filePath = `uploads/videos/${fileName}`; 
+    const filePath = `${videoDirectory}/${videoName}`; 
     
     await fs.writeFile(filePath, fileObject.buffer);
 
-    return { path: filePath, size: fileObject.size }
+    return { path: `${appVideoDirectory}/${videoName}`, size: fileObject.size }
 }
 
 /**
