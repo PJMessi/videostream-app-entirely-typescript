@@ -1,28 +1,28 @@
 {
-    "compilerOptions": {
-        "allowJs": true,
-        "baseUrl": ".",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "strict": true,
-        "target": "es6",
-        "types": [
-            "node", "mocha"
-        ],
-        "esModuleInterop": true,
-        "rootDir": "./",
-        "outDir": "./dist",
-        "paths": {
-            "@root/*": ["./*"],
-            "@middlewares/*": ["src/middlewares/*"],
-            "@services/*": ["src/services/*"],
-            "@routes/*": ["src/routes/*"],
-            "@controllers/*": ["src/controllers/*"],
-            "@models/*": ["src/database/models/*"],
-            "@factories/*": ["src/database/factories/*"],
-            "@helpers/*": ["src/helpers/*"],
-        }
-    }
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "allowJs": true,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "strict": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {
+      "@root/*": ["./*"],
+      "@middlewares/*": ["src/middlewares/*"],
+      "@services/*": ["src/services/*"],
+      "@routes/*": ["src/routes/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@models/*": ["src/database/models/*"],
+      "@factories/*": ["src/database/factories/*"],
+      "@helpers/*": ["src/helpers/*"]
+    },
+    "types": ["node", "mocha"],
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  }
 }
