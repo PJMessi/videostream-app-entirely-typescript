@@ -2,11 +2,11 @@ import "module-alias/register";
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
-import router from './src/routes';
+import router from './routes';
 import errorMiddleware from '@middlewares/error.middleware';
-import sequelize from '@root/src/database/connection'
+import sequelize from '@root/database/connection'
 import path from 'path';
-import { User } from "./src/database/models/user.model";
+import { User } from "@models/user.model";
 import corsMiddleware from '@middlewares/cors.middleware';
 
 // Declaring custom value types.

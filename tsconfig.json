@@ -9,7 +9,7 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {
-      "@root/*": ["./*"],
+      "@root/*": ["src/*"],
       "@middlewares/*": ["src/middlewares/*"],
       "@services/*": ["src/services/*"],
       "@routes/*": ["src/routes/*"],

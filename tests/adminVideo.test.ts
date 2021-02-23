@@ -2,7 +2,7 @@ import "module-alias/register";
 import { assert } from 'chai';
 import request from 'supertest';
 import server from '@root/app';
-import { Video } from "@root/src/database/models/video.model";
+import { Video } from "@models/video.model";
 import fs from 'fs';
 
 const app = request.agent(server);

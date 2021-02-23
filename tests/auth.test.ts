@@ -3,7 +3,7 @@ import { assert } from 'chai';
 import request from 'supertest';
 import server from '@root/app';
 import userFactory from '@factories/user.factory';
-import { User } from "@root/src/database/models/user.model";
+import { User } from "@models/user.model";
 import bcrypt from 'bcrypt';
 
 const app = request.agent(server);
