@@ -2,31 +2,6 @@ import path from 'path';
 import { promises as fs } from 'fs';
 
 /**
- * Saves video in server with unique name.
- * For test environment, video is not saved in server.
- * @param fileObject
- */
-export const saveVideoInLocalStorage = async (
-  fileObject: Express.Multer.File
-): Promise<{ path: string; size: number }> => {
-  const videoName = generateUniqueFileName(fileObject.originalname);
-
-  // directory within app.
-  const appVideoDirectory = 'uploads/videos';
-
-  // complete system directory.
-  const videoDirectory = `${global.appRoot}/${appVideoDirectory}`;
-
-  await generateDirectory(videoDirectory);
-
-  const filePath = `${videoDirectory}/${videoName}`;
-
-  await fs.writeFile(filePath, fileObject.buffer);
-
-  return { path: `${appVideoDirectory}/${videoName}`, size: fileObject.size };
-};
-
-/**
  * Generates unique filename for video.
  * @param originalFileName
  */
@@ -43,7 +18,26 @@ const generateUniqueFileName = (originalFileName: string): string => {
  * @param directory
  */
 const generateDirectory = async (directory: string): Promise<void> => {
-  await fs.stat(directory).catch(async (err) => {
+  await fs.stat(directory).catch(async () => {
     await fs.mkdir(directory, { recursive: true });
   });
+};
+
+export const videoDirectory = path.resolve(`${__dirname}/../uploads/videos`);
+
+/**
+ * Saves video in server with unique name.
+ * @param fileObject
+ */
+export const saveVideoInLocalStorage = async (
+  fileObject: Express.Multer.File
+): Promise<{ path: string; size: number }> => {
+  const videoName = generateUniqueFileName(fileObject.originalname);
+
+  await generateDirectory(videoDirectory);
+
+  const videoPath = `${videoDirectory}/${videoName}`;
+  await fs.writeFile(videoPath, fileObject.buffer);
+
+  return { path: videoName, size: fileObject.size };
 };

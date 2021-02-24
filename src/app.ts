@@ -6,9 +6,8 @@ dotenv.config();
 import express from 'express';
 import errorMiddleware from '@middlewares/error.middleware';
 import sequelize from '@root/database/connection';
-import path from 'path';
-import { User } from '@models/user.model';
 import corsMiddleware from '@middlewares/cors.middleware';
+import { User } from '@models/user.model';
 import router from './routes';
 
 // Declaring custom value types.
@@ -31,8 +30,6 @@ declare global {
     }
   }
 }
-
-global.appRoot = path.resolve(__dirname);
 
 const app = express();
 

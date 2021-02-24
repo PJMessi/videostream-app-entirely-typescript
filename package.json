@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "SET NODE_ENV=test; mocha -r ts-node/register tests/**/*.ts --exit",
-    "watch": "ts-node-dev --respawn app.ts",
+    "watch": "ts-node-dev --respawn src/app.ts",
     "build": "tsc --project tsconfig.json && tscpaths -p tsconfig.json -s ./ -o ./dist",
     "start": "npm run build; node ./dist/app.js",
     "format": "prettier --write src/**/*.ts{,x}",
@@ -70,5 +70,6 @@
     "@models": "./src/database/models",
     "@factories": "./src/database/factories",
     "@helpers": "./src/helpers"
-  }
+  },
+  "types": "global.d.ts"
 }

@@ -5,7 +5,10 @@ import {
   PaginationResult,
   refineFiltersForPagination,
 } from '@helpers/pagination.helper';
-import { saveVideoInLocalStorage } from '@helpers/videoupload.helper';
+import {
+  saveVideoInLocalStorage,
+  videoDirectory,
+} from '@helpers/videoupload.helper';
 import {
   determineStartAndEndBytes,
   VideoStreamData,
@@ -90,7 +93,7 @@ export const deleteVideo = async (videoId: number): Promise<true | null> => {
   const video = await Video.findByPk(videoId);
   if (!video) return null;
 
-  await fs.unlink(`${global.appRoot}/${video.path}`);
+  await fs.unlink(`${videoDirectory}/${video.path}`);
 
   await video.destroy();
   return true;
