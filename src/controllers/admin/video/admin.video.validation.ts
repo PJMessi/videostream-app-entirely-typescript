@@ -18,14 +18,14 @@ export const storeValidation = async (
   request: Request,
   response: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const { name, size, price, path } = request.body;
     const videoFile = request.file;
 
     const rules = {
       name: 'required|string|min:1|max:255',
-      price: 'required|integer|min:1|max:999999',
+      price: 'required|numeric|min:1|max:999999',
     };
 
     await validator({ name, size, price, path }, rules);
@@ -38,7 +38,7 @@ export const storeValidation = async (
       );
     }
 
-    if (videoFile.mimetype != 'video/mp4') {
+    if (videoFile.mimetype !== 'video/mp4') {
       throw new createError.UnprocessableEntity(
         JSON.stringify({
           video: ['Invalid video file.'],
@@ -46,8 +46,8 @@ export const storeValidation = async (
       );
     }
 
-    next();
+    return next();
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

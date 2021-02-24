@@ -1,10 +1,4 @@
-import {
-  Column,
-  DataType,
-  DefaultScope,
-  Model,
-  Table,
-} from 'sequelize-typescript';
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
 import jwt from 'jsonwebtoken';
 
 @Table({
@@ -30,8 +24,13 @@ export class User extends Model {
   })
   password!: string;
 
-  toJSON = () => {
-    const x = User.rawAttributes;
+  toJSON = (): {
+    id: number;
+    name: string;
+    email: string;
+    createdAt: Date;
+    updatedAt: Date;
+  } => {
     return {
       id: this.id,
       name: this.name,
@@ -49,11 +48,11 @@ export class User extends Model {
 }
 
 export type UserAttributes = {
-  id?: number;
+  id: number;
   name: string;
   email: string;
   password: string;
-  createdAt?: Date;
-  updatedAt?: Date;
-  deletedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date;
 };

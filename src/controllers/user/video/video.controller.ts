@@ -9,6 +9,12 @@ import fs from 'fs';
 import { prepareVideoStreamHeader } from '@helpers/videoupload.helper';
 import { VideoPaginationSort } from '@root/types/pagination/video';
 
+/**
+ * Paginates the video according to the given filters.
+ * @param request
+ * @param response
+ * @param next
+ */
 export const paginate = async (
   request: Request,
   response: Response,
@@ -34,6 +40,12 @@ export const paginate = async (
   }
 };
 
+/**
+ * Fetches the video with given id.
+ * @param request
+ * @param response
+ * @param next
+ */
 export const show = async (
   request: Request,
   response: Response,
@@ -55,6 +67,12 @@ export const show = async (
   }
 };
 
+/**
+ * Pipes the data of the video with given id for streaming.
+ * @param request
+ * @param response
+ * @param next
+ */
 export const stream = async (
   request: Request,
   response: Response,

@@ -2,6 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import { registerUser, loginUser } from '@services/user.service';
 import createError from 'http-errors';
 
+/**
+ * GET /auth/login
+ * @param request
+ * @param response
+ * @param next
+ */
 export const login = async (
   request: Request,
   response: Response,
@@ -21,6 +27,12 @@ export const login = async (
   }
 };
 
+/**
+ * GET /auth/register
+ * @param request
+ * @param response
+ * @param next
+ */
 export const register = async (
   request: Request,
   response: Response,
@@ -44,6 +56,12 @@ export const register = async (
   }
 };
 
+/**
+ * GET /auth/profile
+ * @param request
+ * @param response
+ * @param next
+ */
 export const profile = async (
   request: Request,
   response: Response,
