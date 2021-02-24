@@ -33,10 +33,6 @@ export class Video extends Model {
     type: DataType.INTEGER,
   })
   price!: number;
-
-  toJSON() {
-    return { ...super.toJSON(), path: undefined, deletedAt: undefined };
-  }
 }
 
 export type VideoAttributes = {
@@ -45,16 +41,6 @@ export type VideoAttributes = {
   path: string;
   size: number;
   price: number;
-  createdAt?: Date;
-  updatedAt?: Date;
-};
-
-export type VideoAttributesForUpdate = {
-  id?: number;
-  name?: string;
-  path?: string;
-  size?: number;
-  price?: number;
   createdAt?: Date;
   updatedAt?: Date;
 };

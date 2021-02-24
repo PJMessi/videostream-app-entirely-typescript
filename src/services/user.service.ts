@@ -2,33 +2,37 @@ import bcrypt from 'bcrypt';
 import createError from 'http-errors';
 import { User, UserAttributes } from '../database/models/user.model';
 
-/**
- * Registers new user. Returns user data and auth token.
- * @param userAttributes
- */
+type AuthenticationData = {
+  userData: Omit<UserAttributes, 'password' | 'deletedAt'>;
+  authToken: string;
+};
+
 export const registerUser = async (
   userAttributes: UserAttributes
-): Promise<{ userData: object; authToken: string }> => {
-  userAttributes.password = await bcrypt.hash(userAttributes.password, 10);
-
-  const user = await User.create(userAttributes);
+): Promise<AuthenticationData> => {
+  const user = await User.create({
+    ...userAttributes,
+    password: await bcrypt.hash(userAttributes.password, 10),
+  });
 
   const authToken = user.generateToken();
 
   return {
-    userData: user.toJSON(),
+    userData: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    },
     authToken,
   };
 };
 
-/**
- * Checks if user with credentials exists. If it does, returns user data and auth token.
- * @param userCredential
- */
 export const loginUser = async (userCredential: {
   email: string;
   password: string;
-}): Promise<{ userData: object; authToken: string }> => {
+}): Promise<AuthenticationData> => {
   const user = await User.findOne({ where: { email: userCredential.email } });
   if (!user) throw new createError.Unauthorized('Invalid credentials.');
 
@@ -42,24 +46,22 @@ export const loginUser = async (userCredential: {
   const authToken = user.generateToken();
 
   return {
-    userData: user.toJSON(),
+    userData: {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    },
     authToken,
   };
 };
 
-/**
- * Checks if user with given id exists. If it does, returns user, else returns null.
- * @param id
- */
 export const getUserWithGivenId = async (id: number): Promise<User | null> => {
   const user = await User.findByPk(id);
   return user;
 };
 
-/**
- * Checks if user with given email exists. If it does, returns user, else returns null.
- * @param email
- */
 export const getUserWithGivenEmail = async (
   email: string
 ): Promise<User | null> => {

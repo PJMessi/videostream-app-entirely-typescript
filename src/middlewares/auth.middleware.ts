@@ -16,9 +16,9 @@ export default async (
 
     bearerToken = parseBearerToken(bearerToken);
 
-    const decodedObject = decodeData(bearerToken);
+    const decodedId = decodeData(bearerToken);
 
-    const user = await getUserWithGivenId(decodedObject.id);
+    const user = await getUserWithGivenId(decodedId);
     if (!user) throw new createError.Unauthorized();
 
     request.auth = { user };

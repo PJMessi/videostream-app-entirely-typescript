@@ -1,4 +1,10 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import {
+  Column,
+  DataType,
+  DefaultScope,
+  Model,
+  Table,
+} from 'sequelize-typescript';
 import jwt from 'jsonwebtoken';
 
 @Table({
@@ -25,12 +31,19 @@ export class User extends Model {
   password!: string;
 
   toJSON = () => {
-    return { ...super.toJSON(), password: undefined, deletedAt: undefined };
+    const x = User.rawAttributes;
+    return {
+      id: this.id,
+      name: this.name,
+      email: this.email,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+    };
   };
 
-  generateToken = () => {
+  generateToken = (): string => {
     const secret = process.env.JWT_SECRET || 'jsonwebtoken';
-    const token = jwt.sign(this.toJSON(), secret);
+    const token = jwt.sign(this.id, secret);
     return token;
   };
 }
@@ -42,13 +55,5 @@ export type UserAttributes = {
   password: string;
   createdAt?: Date;
   updatedAt?: Date;
-};
-
-export type UserAttributesForUpdate = {
-  id?: number;
-  name?: string;
-  email?: string;
-  password?: string;
-  createdAt?: Date;
-  updatedAt?: Date;
+  deletedAt?: Date;
 };
