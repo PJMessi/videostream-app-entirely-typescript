@@ -3,12 +3,11 @@ import { getUserWithGivenEmail } from '@services/user.service';
 import createError from 'http-errors';
 import validator from '@helpers/validation.helper';
 
-// validates the data for login function in auth.controller.
 export const loginValidation = async (
   request: Request,
   response: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const { email, password } = request.body;
 
@@ -19,22 +18,22 @@ export const loginValidation = async (
 
     await validator({ email, password }, rules);
 
-    next();
+    return next();
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
-// validates the data for register function in auth.controller.
 export const registerValidation = async (
   request: Request,
   response: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     if (request.body.email)
       request.body.email = request.body.email.toLowerCase();
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     const { name, email, password, password_confirmation } = request.body;
 
     const rules = {
@@ -52,8 +51,8 @@ export const registerValidation = async (
       );
     }
 
-    next();
+    return next();
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
