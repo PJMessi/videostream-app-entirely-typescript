@@ -81,3 +81,11 @@ export const refineFiltersForPagination = (
 
   return { limit, page, offset, where, include, order };
 };
+
+export const DefaultLimit = 10;
+export const DefaultPage = 1;
+export const DefaultSortOrder = 'DESC';
+
+export const calculateOffset = (page: number, limit: number): number => {
+  return limit * (page - 1);
+};

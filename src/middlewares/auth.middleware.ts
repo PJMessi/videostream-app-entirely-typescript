@@ -4,49 +4,40 @@ import { NextFunction, Request, Response } from 'express';
 import { getUserWithGivenId } from '@services/user.service';
 import accessEnv from '@helpers/accessEnv';
 
+const parseBearerToken = (bearerToken: string): string => {
+  return bearerToken.substring(7);
+};
+
+const decodeData = (bearerToken: string): string => {
+  try {
+    const JWT_SECRET = accessEnv('JWT_SECRET', 'jsonwebtoken');
+    const jwtPayload = <string>jwt.verify(bearerToken, JWT_SECRET);
+    return jwtPayload;
+  } catch (error) {
+    throw new createError.Unauthorized();
+  }
+};
+
 export default async (
   request: Request,
   resonse: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     let bearerToken = request.headers.authorization;
     if (!bearerToken)
       throw new createError.Unauthorized('Bearer token not provided.');
 
     bearerToken = parseBearerToken(bearerToken);
+    const decodedUserId = decodeData(bearerToken);
 
-    const decodedId = decodeData(bearerToken);
-
-    const user = await getUserWithGivenId(decodedId);
+    const user = await getUserWithGivenId(parseInt(decodedUserId, 10));
     if (!user) throw new createError.Unauthorized();
 
     request.auth = { user };
 
-    next();
+    return next();
   } catch (error) {
-    next(error);
+    return next(error);
   }
-};
-
-// Decodes the data from the bearer token.
-const decodeData = (bearerToken: string) => {
-  const JWT_SECRET = accessEnv('JWT_SECRET', 'jsonwebtoken');
-
-  let decodedObject: any;
-
-  jwt.verify(bearerToken, JWT_SECRET, (error: any, decoded: any) => {
-    if (error) throw new createError.Unauthorized();
-    decodedObject = decoded;
-  });
-
-  return decodedObject;
-};
-
-// Parses bearer token.
-const parseBearerToken = (bearerToken: string): string => {
-  // removing 'Bearer ' from the token.
-  bearerToken = bearerToken.substring(7);
-
-  return bearerToken;
 };

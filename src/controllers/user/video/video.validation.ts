@@ -13,7 +13,7 @@ export const paginateValidation = async (
     const rules = {
       limit: 'integer|min:1|max:1000',
       page: 'integer|min:1|max:99999',
-      sortBy: 'string|in:id,name,price,size,path',
+      sortBy: 'string|in:id,name,price,size,path,createdAt,updatedAt',
       sortOrder: 'string|in:ASC,DESC',
     };
 

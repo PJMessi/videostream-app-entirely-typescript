@@ -3,9 +3,11 @@ import {
   paginateVideosForUsers,
   fetchVideoById,
   streamVideo,
+  VideoPaginationSort,
 } from '@services/video.service';
 import createError from 'http-errors';
 import fs from 'fs';
+import { prepareVideoStreamHeader } from '@helpers/videoupload.helper';
 
 export const paginate = async (
   request: Request,
@@ -13,24 +15,15 @@ export const paginate = async (
   next: NextFunction
 ): Promise<Response | void> => {
   try {
-    const {
-      limit,
-      page,
-      sortBy,
-      sortOrder,
-    }: {
+    // type is validated in validation middleware.
+    const paginationFilter: {
       limit?: number;
       page?: number;
-      sortBy?: string;
+      sortBy?: VideoPaginationSort;
       sortOrder?: 'ASC' | 'DESC';
     } = request.query;
 
-    const paginatedVideos = await paginateVideosForUsers({
-      limit,
-      page,
-      sortBy,
-      sortOrder,
-    });
+    const paginatedVideos = await paginateVideosForUsers(paginationFilter);
 
     return response.json({
       success: true,
@@ -78,13 +71,7 @@ export const stream = async (
 
     const { byteRange, videoPath, videoSize } = videoStreamData;
     const [startByte, endByte] = byteRange;
-
-    const headers = {
-      'Content-Range': `bytes ${startByte}-${endByte}/${videoSize}`,
-      'Accept-Ranges': 'bytes',
-      'Content-Length': endByte - startByte + 1,
-      'Content-Type': 'video/mp4',
-    };
+    const headers = prepareVideoStreamHeader(startByte, endByte, videoSize);
 
     const readStream = fs.createReadStream(videoPath, {
       start: startByte,
