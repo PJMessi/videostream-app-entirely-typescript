@@ -6,18 +6,19 @@ import adminVideoRouter from './admin/admin.video.route';
 const router = Router();
 
 // test route.
-router.get('/', async (request: Request, response: Response, next: NextFunction) => {
+router.get(
+  '/',
+  async (request: Request, response: Response, next: NextFunction) => {
     try {
-        return response.json({
-            title: 'Typescript Videostream API.',
-            message: 'If you can see this message, the APIs are working fine.'
-        });
-        
+      return response.json({
+        title: 'Typescript Videostream API.',
+        message: 'If you can see this message, the APIs are working fine.',
+      });
     } catch (error) {
-        next(error);
+      next(error);
     }
-
-});
+  }
+);
 
 // user routes.
 router.use('/auth', authRouter);

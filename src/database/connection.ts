@@ -1,7 +1,7 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import accessEnv from '@helpers/accessEnv';
 
-const DB_URL = accessEnv("DB_URL");
+const DB_URL = accessEnv('DB_URL');
 
 // const sequelize =  new Sequelize({
 //     database: 'videostream-typescript',
@@ -14,30 +14,29 @@ const DB_URL = accessEnv("DB_URL");
 //     },
 // });
 
-
-
 const sequelizeOptions: SequelizeOptions = {
-    dialectOptions: {
-        charset: "utf8",
-        multipleStatements: true
-    },
-    logging: false,
-    models: [__dirname + '/models'],
-    modelMatch: (filename, member) => {
-        return filename.substring(0, filename.indexOf('.model')) === member.toLowerCase();
-    }
+  dialectOptions: {
+    charset: 'utf8',
+    multipleStatements: true,
+  },
+  logging: false,
+  models: [`${__dirname}/models`],
+  modelMatch: (filename, member) => {
+    return (
+      filename.substring(0, filename.indexOf('.model')) === member.toLowerCase()
+    );
+  },
 };
 
 let sequelize: Sequelize;
 if (process.env.NODE_ENV == 'test') {
-    sequelize =  new Sequelize({
-        ...sequelizeOptions,
-        dialect: 'sqlite',
-        storage: ':memory:'
-    });
-    
+  sequelize = new Sequelize({
+    ...sequelizeOptions,
+    dialect: 'sqlite',
+    storage: ':memory:',
+  });
 } else {
-    sequelize = new Sequelize(DB_URL, sequelizeOptions);
+  sequelize = new Sequelize(DB_URL, sequelizeOptions);
 }
 
 export default sequelize;

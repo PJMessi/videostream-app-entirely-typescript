@@ -5,16 +5,14 @@ const cache: { [key: string]: any } = {};
     again, the cache value is used. It takes sometime to fetch the value from .env. So it saves time.
 */
 export default (key: string, defaultValue?: any) => {
+  if (cache[key]) return cache[key];
 
-    if (cache[key]) return cache[key];
+  if (!(key in process.env)) {
+    if (defaultValue) return defaultValue;
+    throw new Error(`${key} not found in .env file.`);
+  }
 
-    if (!(key in process.env)) {
-        if (defaultValue) return defaultValue;
-        throw new Error(`${key} not found in .env file.`);
-    }
+  cache[key] = process.env[key];
 
-    cache[key] = process.env[key];
-
-    return cache[key];
-
-}
+  return cache[key];
+};

@@ -1,56 +1,54 @@
-import { Column, DataType, Model, Table } from "sequelize-typescript";
-import jwt from 'jsonwebtoken'; 
+import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import jwt from 'jsonwebtoken';
 
 @Table({
-  tableName: 'users'
+  tableName: 'users',
 })
 export class User extends Model {
-
   @Column({
     allowNull: false,
-    type: DataType.STRING
+    type: DataType.STRING,
   })
-  name!: string
+  name!: string;
 
   @Column({
     allowNull: false,
     type: DataType.STRING,
-    unique: true
+    unique: true,
   })
-  email!: string
+  email!: string;
 
   @Column({
     allowNull: false,
-    type: DataType.STRING
+    type: DataType.STRING,
   })
-  password!: string
+  password!: string;
 
   toJSON = () => {
-    return {...super.toJSON(), password: undefined, deletedAt: undefined};
-  }
+    return { ...super.toJSON(), password: undefined, deletedAt: undefined };
+  };
 
   generateToken = () => {
     const secret = process.env.JWT_SECRET || 'jsonwebtoken';
     const token = jwt.sign(this.toJSON(), secret);
     return token;
-  }
-
+  };
 }
 
 export type UserAttributes = {
-  id?: number,
-  name: string,
-  email: string,
-  password: string,
-  createdAt?: Date,
-  updatedAt?: Date
-}
+  id?: number;
+  name: string;
+  email: string;
+  password: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};
 
 export type UserAttributesForUpdate = {
-  id?: number,
-  name?: string,
-  email?: string,
-  password?: string,
-  createdAt?: Date,
-  updatedAt?: Date
-}
+  id?: number;
+  name?: string;
+  email?: string;
+  password?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+};

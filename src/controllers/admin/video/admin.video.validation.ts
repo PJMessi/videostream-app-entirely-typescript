@@ -1,46 +1,53 @@
-import { NextFunction, Request, Response } from "express";
-import validator from "@helpers/validation.helper";
+import { NextFunction, Request, Response } from 'express';
+import validator from '@helpers/validation.helper';
 import multer from 'multer';
 import createError from 'http-errors';
 
 const uploadMiddleware = multer();
 
 // form-data/multipart middleware.
-export const videoUploadValidation = uploadMiddleware.single('video'); 
+export const videoUploadValidation = uploadMiddleware.single('video');
 
 /**
  * Validation for `store` function in adminVideo.controller.
- * @param request 
- * @param response 
- * @param next 
+ * @param request
+ * @param response
+ * @param next
  */
-export const storeValidation = async ( request: Request, response: Response, next: NextFunction ) => {
-	try {
-		const { name, size, price, path } = request.body;
-        const videoFile = request.file;
+export const storeValidation = async (
+  request: Request,
+  response: Response,
+  next: NextFunction
+) => {
+  try {
+    const { name, size, price, path } = request.body;
+    const videoFile = request.file;
 
-		const rules = {
-			name: 'required|string|min:1|max:255',
-            price: 'required|integer|min:1|max:999999',
-		};
-                
-		await validator({ name, size, price, path }, rules);
+    const rules = {
+      name: 'required|string|min:1|max:255',
+      price: 'required|integer|min:1|max:999999',
+    };
 
-        if (!videoFile) {
-            throw new createError.UnprocessableEntity(JSON.stringify({
-                video: ['Video is required.']
-            }));
-        }
+    await validator({ name, size, price, path }, rules);
 
-        if (videoFile.mimetype != 'video/mp4') {
-            throw new createError.UnprocessableEntity(JSON.stringify({
-                video: ['Invalid video file.']
-            }));
-        }
-	        
-		next();
-        
-    } catch (error) { 
-        next(error);
+    if (!videoFile) {
+      throw new createError.UnprocessableEntity(
+        JSON.stringify({
+          video: ['Video is required.'],
+        })
+      );
     }
-}
+
+    if (videoFile.mimetype != 'video/mp4') {
+      throw new createError.UnprocessableEntity(
+        JSON.stringify({
+          video: ['Invalid video file.'],
+        })
+      );
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
