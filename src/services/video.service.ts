@@ -1,11 +1,10 @@
 import { Video } from '@models/video.model';
 import {
-  appendPaginationData,
-  PaginationResult,
   calculateOffset,
   DefaultLimit,
   DefaultPage,
   DefaultSortOrder,
+  generatePaginationHelpers,
 } from '@helpers/pagination.helper';
 import {
   saveVideoInLocalStorage,
@@ -16,10 +15,16 @@ import {
   VideoStreamData,
 } from '@helpers/videoStream.helper';
 import { promises as fs } from 'fs';
+import { PaginationResult } from '@root/types/pagination';
+import { VideoPaginationFilter } from '@root/types/pagination/video';
 
-export const paginateVideosForUsers = async (
+/**
+ * Paginates video based on given pagination filters.
+ * @param paginationFilter
+ */
+export const paginateVideos = async (
   paginationFilter: VideoPaginationFilter
-): Promise<PaginationResult> => {
+): Promise<PaginationResult<Video>> => {
   const limit = paginationFilter.limit || DefaultLimit;
   const page = paginationFilter.page || DefaultPage;
   const sortOrder = paginationFilter.sortOrder || DefaultSortOrder;
@@ -27,20 +32,35 @@ export const paginateVideosForUsers = async (
   const offset = calculateOffset(page, limit);
 
   const paginatedVideos = await Video.findAndCountAll({
+    attributes: { exclude: ['path'] },
     limit,
     offset,
     order: [[sortBy, sortOrder]],
   });
 
-  const paginatedResult = appendPaginationData(paginatedVideos, limit, page);
-  return paginatedResult;
+  const paginationHelpers = generatePaginationHelpers(
+    limit,
+    page,
+    paginatedVideos.count
+  );
+
+  return { ...paginatedVideos, ...paginationHelpers };
 };
 
+/**
+ * Fetches video by id.
+ * @param id
+ */
 export const fetchVideoById = async (id: number): Promise<Video | null> => {
   const video = await Video.findByPk(id);
   return video;
 };
 
+/**
+ * Uploads video in the server and saves its info in database.
+ * @param attributes
+ * @param videoFile
+ */
 export const uploadVideo = async (
   attributes: { name: string; price: number },
   videoFile: Express.Multer.File
@@ -57,6 +77,11 @@ export const uploadVideo = async (
   return video;
 };
 
+/**
+ * Prepares video stream data for the video with the given id, based on given range header.
+ * @param videoId
+ * @param rangeHeader
+ */
 export const streamVideo = async (
   videoId: number,
   rangeHeader: string
@@ -72,6 +97,10 @@ export const streamVideo = async (
   return { byteRange, videoPath, videoSize: video.size };
 };
 
+/**
+ * Deletes video file from server and removes its info from the database.
+ * @param videoId
+ */
 export const deleteVideo = async (videoId: number): Promise<true | null> => {
   const video = await Video.findByPk(videoId);
   if (!video) return null;
@@ -81,31 +110,3 @@ export const deleteVideo = async (videoId: number): Promise<true | null> => {
   await video.destroy();
   return true;
 };
-
-type VideoPaginationFilter = {
-  limit?: number;
-  page?: number;
-  where?: VideoPaginationWhere;
-  include?: string[];
-  sortOrder?: 'ASC' | 'DESC';
-  sortBy?: VideoPaginationSort;
-};
-
-export type VideoPaginationWhere = {
-  id?: string;
-  name?: string;
-  path?: string;
-  size?: string;
-  price?: string;
-  createdAt?: string;
-  updatedAt?: string;
-};
-
-export type VideoPaginationSort =
-  | 'id'
-  | 'name'
-  | 'path'
-  | 'size'
-  | 'price'
-  | 'createdAt'
-  | 'updatedAt';

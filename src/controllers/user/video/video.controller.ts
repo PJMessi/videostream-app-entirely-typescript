@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import {
-  paginateVideosForUsers,
+  paginateVideos,
   fetchVideoById,
   streamVideo,
-  VideoPaginationSort,
 } from '@services/video.service';
 import createError from 'http-errors';
 import fs from 'fs';
 import { prepareVideoStreamHeader } from '@helpers/videoupload.helper';
+import { VideoPaginationSort } from '@root/types/pagination/video';
 
 export const paginate = async (
   request: Request,
@@ -23,7 +23,7 @@ export const paginate = async (
       sortOrder?: 'ASC' | 'DESC';
     } = request.query;
 
-    const paginatedVideos = await paginateVideosForUsers(paginationFilter);
+    const paginatedVideos = await paginateVideos(paginationFilter);
 
     return response.json({
       success: true,
