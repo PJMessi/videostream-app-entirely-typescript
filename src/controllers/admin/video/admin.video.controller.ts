@@ -2,17 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import { uploadVideo, deleteVideo } from '@services/video.service';
 import createError from 'http-errors';
 
-/**
- * Uploads video and saves its record in database.
- * @param request
- * @param response
- * @param next
- */
 export const store = async (
   request: Request,
   response: Response,
   next: NextFunction
-) => {
+): Promise<Response | void> => {
   try {
     const { name, price }: { name: string; price: number } = request.body;
 
@@ -23,23 +17,17 @@ export const store = async (
       data: { video },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
-/**
- * Deletes the video with given id from the server and database.
- * @param request
- * @param response
- * @param next
- */
 export const destroy = async (
   request: Request,
   response: Response,
   next: NextFunction
-) => {
+): Promise<Response | void> => {
   try {
-    const videoId = parseInt(request.params.videoId);
+    const videoId = parseInt(request.params.videoId, 10);
 
     const videoDeleted = await deleteVideo(videoId);
     if (!videoDeleted) throw new createError.NotFound('Video not found.');
@@ -49,6 +37,6 @@ export const destroy = async (
       message: 'Video deleted.',
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };

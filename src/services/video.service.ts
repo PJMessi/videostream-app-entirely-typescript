@@ -15,10 +15,6 @@ import {
 } from '@helpers/videoStream.helper';
 import { promises as fs } from 'fs';
 
-/**
- * Paginates videos based on given filters.
- * @param paginationFilter
- */
 export const paginateVideosForUsers = async (
   paginationFilter: PaginationFilter
 ): Promise<PaginationResult> => {
@@ -29,24 +25,15 @@ export const paginateVideosForUsers = async (
   const paginatedVideos = await Video.findAndCountAll({ limit, offset, order });
 
   const paginatedResult = appendPaginationData(paginatedVideos, limit, page);
-
   return paginatedResult;
 };
 
-/**
- * Fetches video with given id.
- * @param id
- */
 export const fetchVideoById = async (id: number): Promise<Video | null> => {
   const video = await Video.findByPk(id);
 
   return video;
 };
 
-/**
- * Creates new video from given data.
- * @param attributes
- */
 export const uploadVideo = async (
   attributes: { name: string; price: number },
   videoFile: Express.Multer.File
@@ -63,12 +50,6 @@ export const uploadVideo = async (
   return video;
 };
 
-/**
- * Prepares video stream data for video with given id.
- * Returns null if video with the given id does not exist.
- * @param videoId
- * @param rangeHeader
- */
 export const streamVideo = async (
   videoId: number,
   rangeHeader: string
@@ -84,11 +65,6 @@ export const streamVideo = async (
   return { byteRange, videoPath, videoSize: video.size };
 };
 
-/**
- * Removes video from the server and database.
- * Returns null if video with the given id does not exist.
- * @param videoId
- */
 export const deleteVideo = async (videoId: number): Promise<true | null> => {
   const video = await Video.findByPk(videoId);
   if (!video) return null;

@@ -7,17 +7,11 @@ import {
 import createError from 'http-errors';
 import fs from 'fs';
 
-/**
- * Paginates the videos.
- * @param request
- * @param response
- * @param next
- */
 export const paginate = async (
   request: Request,
   response: Response,
   next: NextFunction
-) => {
+): Promise<Response | void> => {
   try {
     const {
       limit,
@@ -43,23 +37,17 @@ export const paginate = async (
       data: paginatedVideos,
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
-/**
- * Fetches video with given id.
- * @param request
- * @param response
- * @param next
- */
 export const show = async (
   request: Request,
   response: Response,
   next: NextFunction
-) => {
+): Promise<Response | void> => {
   try {
-    const videoId = parseInt(request.params.videoId);
+    const videoId = parseInt(request.params.videoId, 10);
 
     const video = await fetchVideoById(videoId);
     if (!video)
@@ -70,25 +58,20 @@ export const show = async (
       data: { video },
     });
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
 
-/**
- * Streams the video with given id.
- * @param request
- * @param response
- * @param next
- */
 export const stream = async (
   request: Request,
   response: Response,
   next: NextFunction
-) => {
+): Promise<Response | void> => {
   try {
-    const rangeHeader = request.headers.range!;
+    const rangeHeader = request.headers.range;
+    if (!rangeHeader) throw new createError.BadRequest('Range header missing.');
 
-    const videoId = parseInt(request.params.videoId);
+    const videoId = parseInt(request.params.videoId, 10);
     const videoStreamData = await streamVideo(videoId, rangeHeader);
     if (!videoStreamData)
       throw new createError.NotFound('Video with given id not found.');
@@ -108,8 +91,8 @@ export const stream = async (
       end: endByte,
     });
     response.writeHead(206, headers);
-    readStream.pipe(response);
+    return readStream.pipe(response);
   } catch (error) {
-    next(error);
+    return next(error);
   }
 };
