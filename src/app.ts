@@ -10,35 +10,19 @@ import corsMiddleware from '@middlewares/cors.middleware';
 import { User } from '@models/user.model';
 import router from './routes';
 
-// Declaring custom value types.
 declare global {
-  namespace NodeJS {
-    interface Global {
-      appRoot: string;
-    }
-  }
-
   namespace Express {
     interface Request {
       file: Express.Multer.File;
-    }
-  }
-
-  namespace Express {
-    interface Request {
       auth: { user?: User };
     }
   }
 }
 
 const app = express();
-
 app.use(express.json());
-
 app.use(corsMiddleware);
-
 app.use(router);
-
 app.use(errorMiddleware);
 
 sequelize

@@ -76,7 +76,7 @@ export const streamVideo = async (
   const video = await Video.findByPk(videoId);
   if (!video) return null;
 
-  const videoPathInServer = `${global.appRoot}/${video.path}`;
+  const videoPathInServer = `${videoDirectory}/${video.path}`;
 
   const byteRange = determineStartAndEndBytes(video.size, rangeHeader);
   const videoPath = videoPathInServer;
